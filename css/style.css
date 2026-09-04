@@ -1,0 +1,376 @@
+/* =========================================
+   TERRAGUARD - GLOBAL STYLES
+   ========================================= */
+
+
+/* =========================================
+   ROOT VARIABLES
+   ========================================= */
+
+:root {
+    --primary: #606C38;
+    --dark: #283618;
+    --cream: #FEFAE0;
+    --secondary: #DDA15E;
+    --accent: #BC6C25;
+}
+
+
+/* =========================================
+   GLOBAL
+   ========================================= */
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+body {
+    margin: 0;
+    padding: 0;
+
+    font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    background-color: var(--cream);
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+/* =========================================
+   TEXT SELECTION
+   ========================================= */
+
+::selection {
+    background-color: var(--secondary);
+    color: var(--dark);
+}
+
+
+/* =========================================
+   SCROLLBAR
+   ========================================= */
+
+::-webkit-scrollbar {
+    width: 9px;
+}
+
+
+::-webkit-scrollbar-track {
+    background: var(--cream);
+}
+
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--primary);
+    border-radius: 10px;
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--dark);
+}
+
+
+/* =========================================
+   LINKS
+   ========================================= */
+
+a {
+    text-decoration: none;
+}
+
+
+/* =========================================
+   BUTTONS
+   ========================================= */
+
+button {
+    cursor: pointer;
+    font-family: inherit;
+}
+
+
+/* =========================================
+   CARD HOVER EFFECT
+   ========================================= */
+
+.bg-white {
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+/* =========================================
+   MAP
+   ========================================= */
+
+.map-container {
+    position: relative;
+    overflow: hidden;
+}
+
+
+/*
+    Temporary map background.
+
+    Later this section will be replaced by
+    the actual OpenStreetMap map.
+*/
+
+.map-placeholder {
+    background-color: #e8e4cf;
+
+    background-image:
+        linear-gradient(
+            45deg,
+            rgba(96, 108, 56, 0.04) 25%,
+            transparent 25%
+        ),
+        linear-gradient(
+            -45deg,
+            rgba(96, 108, 56, 0.04) 25%,
+            transparent 25%
+        );
+
+    background-size: 40px 40px;
+}
+
+
+/* =========================================
+   ALERT INDICATOR
+   ========================================= */
+
+.alert-indicator {
+    position: relative;
+}
+
+
+.alert-indicator::after {
+    content: "";
+
+    position: absolute;
+
+    top: -2px;
+    right: -2px;
+
+    width: 7px;
+    height: 7px;
+
+    background-color: var(--accent);
+
+    border-radius: 50%;
+}
+
+
+/* =========================================
+   PAGE FADE-IN
+   ========================================= */
+
+.page-content {
+    animation: pageFadeIn 0.5s ease-out;
+}
+
+
+@keyframes pageFadeIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =========================================
+   NAVBAR
+   ========================================= */
+
+header {
+    backdrop-filter: blur(10px);
+}
+
+
+/* =========================================
+   RISK CARDS
+   ========================================= */
+
+.risk-card {
+    position: relative;
+
+    overflow: hidden;
+}
+
+
+.risk-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 80px;
+    height: 80px;
+
+    right: -25px;
+    bottom: -25px;
+
+    border-radius: 50%;
+
+    background-color: rgba(221, 161, 94, 0.08);
+
+    pointer-events: none;
+}
+
+
+/* =========================================
+   ALERT CARDS
+   ========================================= */
+
+.alert-card {
+    transition:
+        transform 0.2s ease,
+        background-color 0.2s ease;
+}
+
+
+.alert-card:hover {
+    transform: translateX(4px);
+}
+
+
+/* =========================================
+   LOADING ANIMATION
+   ========================================= */
+
+.loading-spinner {
+    width: 28px;
+    height: 28px;
+
+    border: 3px solid rgba(96, 108, 56, 0.2);
+
+    border-top-color: var(--primary);
+
+    border-radius: 50%;
+
+    animation: spin 0.8s linear infinite;
+}
+
+
+@keyframes spin {
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+/* =========================================
+   STATUS DOTS
+   ========================================= */
+
+.status-dot {
+    display: inline-block;
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+}
+
+
+.status-low {
+    background-color: var(--primary);
+}
+
+
+.status-moderate {
+    background-color: var(--secondary);
+}
+
+
+.status-high {
+    background-color: var(--accent);
+}
+
+
+.status-critical {
+    background-color: var(--dark);
+}
+
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 768px) {
+
+    main {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+
+    h2 {
+        font-size: 2.25rem;
+    }
+
+
+    .map-placeholder {
+        min-height: 300px;
+    }
+
+}
+
+
+/* =========================================
+   SMALL DEVICES
+   ========================================= */
+
+@media (max-width: 480px) {
+
+    h2 {
+        font-size: 1.9rem;
+    }
+
+
+    .map-placeholder {
+        min-height: 260px;
+    }
+
+}
+
+
+/* =========================================
+   REDUCED MOTION
+   ========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+}

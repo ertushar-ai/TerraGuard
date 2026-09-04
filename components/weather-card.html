@@ -1,0 +1,156 @@
+<!-- =========================================
+     TerraGuard - Weather Card Component
+     ========================================= -->
+
+<div class="weather-card">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
+
+        <div>
+            <p class="text-sm text-gray-500">
+                Current Weather
+            </p>
+
+            <h3
+                class="text-xl font-bold text-dark"
+                data-weather-location>
+                Delhi
+            </h3>
+        </div>
+
+        <!-- Weather Icon -->
+        <div class="weather-icon">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="26"
+                height="26"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+
+                <path d="M12 2v2"></path>
+                <path d="M12 20v2"></path>
+                <path d="m4.93 4.93 1.41 1.41"></path>
+                <path d="m17.66 17.66 1.41 1.41"></path>
+                <path d="M2 12h2"></path>
+                <path d="M20 12h2"></path>
+                <path d="m6.34 17.66-1.41 1.41"></path>
+                <path d="m19.07 4.93-1.41 1.41"></path>
+                <circle cx="12" cy="12" r="4"></circle>
+
+            </svg>
+        </div>
+
+    </div>
+
+
+    <!-- Temperature -->
+    <div class="mb-6">
+
+        <div
+            class="weather-temperature"
+            data-weather-temperature>
+            28°C
+        </div>
+
+        <p class="weather-label mt-2">
+            Feels like
+            <span data-weather-feels-like>
+                30°C
+            </span>
+        </p>
+
+    </div>
+
+
+    <!-- Weather Details -->
+    <div class="grid grid-cols-2 gap-4">
+
+        <!-- Humidity -->
+        <div class="bg-cream rounded-xl p-4">
+
+            <p class="weather-label mb-1">
+                Humidity
+            </p>
+
+            <p
+                class="font-semibold text-dark"
+                data-weather-humidity>
+                64%
+            </p>
+
+        </div>
+
+
+        <!-- Wind -->
+        <div class="bg-cream rounded-xl p-4">
+
+            <p class="weather-label mb-1">
+                Wind Speed
+            </p>
+
+            <p
+                class="font-semibold text-dark"
+                data-weather-wind>
+                12 km/h
+            </p>
+
+        </div>
+
+
+        <!-- Rainfall -->
+        <div class="bg-cream rounded-xl p-4">
+
+            <p class="weather-label mb-1">
+                Rain Probability
+            </p>
+
+            <p
+                class="font-semibold text-dark"
+                data-weather-rainfall>
+                20%
+            </p>
+
+        </div>
+
+
+        <!-- Condition -->
+        <div class="bg-cream rounded-xl p-4">
+
+            <p class="weather-label mb-1">
+                Condition
+            </p>
+
+            <p
+                class="font-semibold text-dark"
+                data-weather-condition>
+                Clear
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- Risk -->
+    <div
+        class="mt-5 flex items-center justify-between
+               border-t border-gray-100 pt-4">
+
+        <span class="text-sm text-gray-500">
+            Weather Risk
+        </span>
+
+        <span
+            class="risk-badge risk-badge-low"
+            data-weather-risk>
+            Low
+        </span>
+
+    </div>
+
+</div>

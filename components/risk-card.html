@@ -1,0 +1,128 @@
+<!-- =========================================
+     TerraGuard - Risk Card Component
+     ========================================= -->
+
+<div class="risk-card">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-5">
+
+        <div>
+            <p class="text-sm text-gray-500">
+                Risk Assessment
+            </p>
+
+            <h3
+                class="text-xl font-bold text-dark"
+                data-risk-title>
+                Landslide Risk
+            </h3>
+        </div>
+
+        <!-- Risk Icon -->
+        <div class="risk-icon">
+
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="25"
+                height="25"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+
+                <path d="m3 17 6-6 4 4 8-8"></path>
+                <path d="M14 7h7v7"></path>
+
+            </svg>
+
+        </div>
+
+    </div>
+
+
+    <!-- Risk Level -->
+    <div class="mb-5">
+
+        <div class="flex items-center gap-3">
+
+            <span
+                class="risk-badge risk-badge-moderate"
+                data-risk-level>
+                Moderate
+            </span>
+
+            <span
+                class="text-sm text-gray-500"
+                data-risk-score>
+                Score: 42%
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- Risk Progress -->
+    <div class="mb-5">
+
+        <div class="flex justify-between text-sm mb-2">
+
+            <span class="text-gray-500">
+                Risk Level
+            </span>
+
+            <span
+                class="font-medium text-dark"
+                data-risk-percentage>
+                42%
+            </span>
+
+        </div>
+
+        <div class="w-full bg-gray-200 rounded-full h-2">
+
+            <div
+                class="risk-progress h-2 rounded-full"
+                data-risk-progress
+                style="width: 42%;">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Location -->
+    <div
+        class="flex items-center gap-2
+               text-sm text-gray-500">
+
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="17"
+            height="17"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+
+            <path
+                d="M20 10c0 4.993-8 12-8 12S4 14.993 4 10a8 8 0 1 1 16 0Z">
+            </path>
+
+            <circle cx="12" cy="10" r="3"></circle>
+
+        </svg>
+
+        <span data-risk-location>
+            Delhi
+        </span>
+
+    </div>
+
+</div>

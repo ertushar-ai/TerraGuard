@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TerraGuard - Weather Monitoring</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#606C38",
+                        dark: "#283618",
+                        cream: "#FEFAE0",
+                        secondary: "#DDA15E",
+                        accent: "#BC6C25"
+                    }
+                }
+            }
+        };
+    </script>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/components.css">
+</head>
+
+<body class="bg-cream text-dark">
+
+    <nav class="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="../index.html" class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
+                        <span class="text-xl">🌍</span>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-lg">TerraGuard</h1>
+                        <p class="text-xs opacity-70">Local Disaster Monitoring</p>
+                    </div>
+                </a>
+
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="../index.html" class="hover:text-secondary transition">Dashboard</a>
+                    <a href="weather.html" class="text-secondary font-semibold">Weather</a>
+                    <a href="landslide.html" class="hover:text-secondary transition">Landslide</a>
+                    <a href="earthquake.html" class="hover:text-secondary transition">Earthquake</a>
+                    <a href="map.html" class="hover:text-secondary transition">Map</a>
+                </div>
+
+                <div class="hidden md:flex items-center gap-2">
+                    <span>📍</span>
+                    <span id="navbar-location" class="text-sm">Delhi</span>
+                </div>
+
+                <button
+                    id="mobile-menu-button"
+                    class="md:hidden text-xl"
+                    aria-label="Open menu"
+                    type="button"
+                >
+                    ☰
+                </button>
+            </div>
+
+            <div id="mobile-menu" class="hidden md:hidden pb-4">
+                <div class="flex flex-col gap-3">
+                    <a href="../index.html">Dashboard</a>
+                    <a href="weather.html" class="font-semibold">Weather</a>
+                    <a href="landslide.html">Landslide</a>
+                    <a href="earthquake.html">Earthquake</a>
+                    <a href="map.html">Map</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-6">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-5">
+                <div>
+                    <p class="text-sm font-semibold text-primary uppercase tracking-wide">
+                        Weather Monitoring
+                    </p>
+                    <h2 class="text-3xl md:text-4xl font-bold mt-2">
+                        Local Weather
+                    </h2>
+                    <p class="text-gray-600 mt-3 max-w-2xl">
+                        Real-time weather information for the selected monitoring location using Open-Meteo.
+                    </p>
+                </div>
+
+                <button
+                    data-weather-refresh
+                    type="button"
+                    class="px-5 py-3 rounded-lg bg-primary text-cream font-semibold hover:opacity-90 transition"
+                >
+                    🔄 Refresh Weather
+                </button>
+            </div>
+        </section>
+
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+            <div class="weather-card bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <p class="text-gray-500 text-sm">Current conditions</p>
+                        <h3 data-weather-location class="text-2xl font-bold mt-1">
+                            Delhi
+                        </h3>
+
+                        <div class="flex items-center gap-5 mt-7">
+                            <div class="weather-icon">🌤️</div>
+
+                            <div>
+                                <div data-weather-temperature class="weather-temperature">
+                                    --°C
+                                </div>
+                                <p data-weather-condition class="text-lg font-semibold text-gray-700">
+                                    Loading...
+                                </p>
+                                <p class="text-sm text-gray-500 mt-1">
+                                    Feels like
+                                    <span data-weather-feels-like>--°C</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-cream rounded-xl p-6">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-sm text-gray-500">Weather Risk</p>
+                                <h3 data-weather-risk class="text-2xl font-bold mt-1">
+                                    Checking...
+                                </h3>
+                            </div>
+
+                            <span id="weather-risk-icon" class="text-3xl">⚠️</span>
+                        </div>
+
+                        <div class="risk-progress mt-5">
+                            <div
+                                data-weather-risk-progress
+                                class="risk-progress-bar"
+                                style="width: 0%;"
+                            ></div>
+                        </div>
+
+                        <p data-weather-risk-message class="text-sm text-gray-600 mt-3">
+                            Analysing current weather conditions...
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+            <h2 class="text-2xl font-bold mb-5">Weather Details</h2>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200">
+                    <span class="text-2xl">💧</span>
+                    <p class="text-sm text-gray-500 mt-3">Humidity</p>
+                    <p data-weather-humidity class="text-2xl font-bold mt-1">--%</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200">
+                    <span class="text-2xl">💨</span>
+                    <p class="text-sm text-gray-500 mt-3">Wind Speed</p>
+                    <p data-weather-wind class="text-2xl font-bold mt-1">-- km/h</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200">
+                    <span class="text-2xl">🌧️</span>
+                    <p class="text-sm text-gray-500 mt-3">Rain Probability</p>
+                    <p data-weather-rainfall class="text-2xl font-bold mt-1">--%</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200">
+                    <span class="text-2xl">☔</span>
+                    <p class="text-sm text-gray-500 mt-3">Precipitation</p>
+                    <p data-weather-precipitation class="text-2xl font-bold mt-1">-- mm</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+            <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+                <h2 class="text-xl font-bold mb-4">Weather Risk Assessment</h2>
+
+                <p data-weather-risk-message-large class="text-gray-600 leading-relaxed">
+                    TerraGuard analyses rainfall probability, precipitation, humidity,
+                    wind speed and thunderstorm conditions to determine the current
+                    weather risk level.
+                </p>
+
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="rounded-lg p-4 bg-primary/10">
+                        <p class="font-semibold text-primary">Low</p>
+                        <p class="text-sm text-gray-600 mt-1">Normal weather conditions.</p>
+                    </div>
+
+                    <div class="rounded-lg p-4 bg-secondary/20">
+                        <p class="font-semibold">Moderate</p>
+                        <p class="text-sm text-gray-600 mt-1">Conditions require monitoring.</p>
+                    </div>
+
+                    <div class="rounded-lg p-4 bg-orange-100">
+                        <p class="font-semibold text-accent">High</p>
+                        <p class="text-sm text-gray-600 mt-1">Potentially hazardous conditions.</p>
+                    </div>
+
+                    <div class="rounded-lg p-4 bg-dark/10">
+                        <p class="font-semibold text-dark">Critical</p>
+                        <p class="text-sm text-gray-600 mt-1">Severe conditions requiring attention.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-dark text-cream">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-2">TerraGuard</h3>
+                    <p class="text-sm opacity-70">
+                        Local Disaster Monitoring System for weather, landslides and earthquakes.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold mb-3">Quick Links</h4>
+                    <div class="flex flex-col gap-2 text-sm opacity-80">
+                        <a href="../index.html" class="hover:text-secondary">Dashboard</a>
+                        <a href="landslide.html" class="hover:text-secondary">Landslide</a>
+                        <a href="earthquake.html" class="hover:text-secondary">Earthquake</a>
+                        <a href="map.html" class="hover:text-secondary">Map</a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold mb-3">System Status</h4>
+                    <div class="flex items-center gap-2 text-sm">
+                        <span class="status-dot status-online"></span>
+                        <span>Weather Monitoring Online</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 mt-8 pt-5 text-sm opacity-60">
+                © 2026 TerraGuard. Weather • Landslide • Earthquake Monitoring.
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/utils.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/weather.js"></script>
+    <script src="../js/alerts.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const riskElement = document.querySelector("[data-weather-risk]");
+            const riskProgress = document.querySelector("[data-weather-risk-progress]");
+            const riskMessage = document.querySelector("[data-weather-risk-message]");
+            const largeMessage = document.querySelector("[data-weather-risk-message-large]");
+            const precipitation = document.querySelector("[data-weather-precipitation]");
+
+            const observer = new MutationObserver(() => {
+                if (!riskElement || !riskElement.textContent) return;
+
+                const risk = riskElement.textContent.trim();
+                const percentage = getRiskPercentage(risk);
+                const message = getRiskMessage(risk);
+
+                if (riskProgress) {
+                    riskProgress.style.width = `${percentage}%`;
+                }
+
+                if (riskMessage) {
+                    riskMessage.textContent = message;
+                }
+
+                if (largeMessage) {
+                    largeMessage.textContent = message;
+                }
+
+                updateRiskIcon(risk);
+            });
+
+            if (riskElement) {
+                observer.observe(riskElement, {
+                    childList: true,
+                    characterData: true,
+                    subtree: true
+                });
+            }
+
+            window.addEventListener("terraguard:weather-updated", function (event) {
+                if (precipitation && event.detail) {
+                    precipitation.textContent = `${event.detail.precipitation} mm`;
+                }
+            });
+        });
+
+        function getRiskPercentage(risk) {
+            switch (String(risk).toLowerCase()) {
+                case "critical":
+                    return 100;
+                case "high":
+                    return 75;
+                case "moderate":
+                    return 50;
+                case "low":
+                    return 25;
+                default:
+                    return 10;
+            }
+        }
+
+        function getRiskMessage(risk) {
+            switch (String(risk).toLowerCase()) {
+                case "critical":
+                    return "Severe weather conditions detected. Immediate attention is recommended.";
+                case "high":
+                    return "Potentially hazardous weather conditions have been detected. Stay alert.";
+                case "moderate":
+                    return "Some weather conditions require monitoring. Continue checking TerraGuard updates.";
+                case "low":
+                    return "Weather conditions are currently within a relatively normal range.";
+                default:
+                    return "TerraGuard is analysing the current weather conditions.";
+            }
+        }
+
+        function updateRiskIcon(risk) {
+            const icon = document.getElementById("weather-risk-icon");
+
+            if (!icon) return;
+
+            switch (String(risk).toLowerCase()) {
+                case "critical":
+                    icon.textContent = "🚨";
+                    break;
+                case "high":
+                    icon.textContent = "⚠️";
+                    break;
+                case "moderate":
+                    icon.textContent = "🟠";
+                    break;
+                case "low":
+                    icon.textContent = "🟢";
+                    break;
+                default:
+                    icon.textContent = "🔎";
+            }
+        }
+    </script>
+</body>
+</html>

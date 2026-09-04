@@ -1,0 +1,141 @@
+<nav class="bg-dark text-cream shadow-md">
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="flex justify-between items-center h-16">
+
+            <!-- =========================
+                 BRAND / LOGO
+            ========================== -->
+            <a href="../index.html"
+               class="flex items-center gap-3">
+
+                <div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
+                    <span class="text-xl">🌍</span>
+                </div>
+
+                <div>
+                    <h1 class="font-bold text-lg">
+                        TerraGuard
+                    </h1>
+
+                    <p class="text-xs text-gray-300">
+                        Disaster Monitoring
+                    </p>
+                </div>
+
+            </a>
+
+
+            <!-- =========================
+                 DESKTOP NAVIGATION
+            ========================== -->
+            <div class="hidden md:flex items-center gap-6">
+
+                <a href="../index.html"
+                   class="navbar-link"
+                   data-page="dashboard">
+                    Dashboard
+                </a>
+
+                <a href="../pages/weather.html"
+                   class="navbar-link"
+                   data-page="weather">
+                    Weather
+                </a>
+
+                <a href="../pages/landslide.html"
+                   class="navbar-link"
+                   data-page="landslide">
+                    Landslide
+                </a>
+
+                <a href="../pages/earthquake.html"
+                   class="navbar-link"
+                   data-page="earthquake">
+                    Earthquake
+                </a>
+
+                <a href="../pages/map.html"
+                   class="navbar-link"
+                   data-page="map">
+                    Map
+                </a>
+
+            </div>
+
+
+            <!-- =========================
+                 CURRENT LOCATION
+            ========================== -->
+            <div class="hidden md:flex items-center gap-2 text-sm">
+
+                <span>
+                    📍
+                </span>
+
+                <span id="navbar-location">
+                    Delhi
+                </span>
+
+            </div>
+
+
+            <!-- =========================
+                 MOBILE MENU BUTTON
+            ========================== -->
+            <button
+                id="mobile-menu-button"
+                class="md:hidden text-2xl hover:text-secondary transition"
+                aria-label="Open navigation menu"
+                aria-expanded="false">
+
+                ☰
+
+            </button>
+
+        </div>
+
+
+        <!-- =========================
+             MOBILE NAVIGATION
+        ========================== -->
+        <div
+            id="mobile-menu"
+            class="hidden md:hidden pb-4">
+
+            <a href="../index.html"
+               class="mobile-navbar-link"
+               data-page="dashboard">
+                Dashboard
+            </a>
+
+            <a href="../pages/weather.html"
+               class="mobile-navbar-link"
+               data-page="weather">
+                Weather
+            </a>
+
+            <a href="../pages/landslide.html"
+               class="mobile-navbar-link"
+               data-page="landslide">
+                Landslide
+            </a>
+
+            <a href="../pages/earthquake.html"
+               class="mobile-navbar-link"
+               data-page="earthquake">
+                Earthquake
+            </a>
+
+            <a href="../pages/map.html"
+               class="mobile-navbar-link"
+               data-page="map">
+                Map
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>

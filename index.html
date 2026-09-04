@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TerraGuard - Local Disaster Monitoring System</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#606C38",
+                        dark: "#283618",
+                        cream: "#FEFAE0",
+                        secondary: "#DDA15E",
+                        accent: "#BC6C25"
+                    }
+                }
+            }
+        };
+    </script>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+
+<body class="bg-cream text-dark">
+
+    <nav class="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
+                        <span class="text-xl">🌍</span>
+                    </div>
+
+                    <div>
+                        <h1 class="font-bold text-lg">TerraGuard</h1>
+                        <p class="text-xs opacity-70">Local Disaster Monitoring</p>
+                    </div>
+                </a>
+
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="index.html" class="text-secondary font-semibold">Dashboard</a>
+                    <a href="pages/weather.html" class="hover:text-secondary transition">Weather</a>
+                    <a href="pages/landslide.html" class="hover:text-secondary transition">Landslide</a>
+                    <a href="pages/earthquake.html" class="hover:text-secondary transition">Earthquake</a>
+                    <a href="pages/map.html" class="hover:text-secondary transition">Map</a>
+                </div>
+
+                <div class="hidden md:flex items-center gap-5">
+                    <button
+                        id="notification-settings-button"
+                        type="button"
+                        class="flex items-center gap-2 hover:text-secondary transition"
+                    >
+                        <span>🔔</span>
+                        <span>Notifications</span>
+                    </button>
+
+                    <div class="flex items-center gap-2">
+                        <span>📍</span>
+                        <span id="navbar-location" class="text-sm">Loading...</span>
+                    </div>
+                </div>
+
+                <button
+                    id="mobile-menu-button"
+                    class="md:hidden text-xl"
+                    aria-label="Open navigation menu"
+                    type="button"
+                >
+                    ☰
+                </button>
+            </div>
+
+            <div id="mobile-menu" class="hidden md:hidden pb-4">
+                <div class="flex flex-col gap-3">
+                    <a href="index.html">Dashboard</a>
+                    <a href="pages/weather.html">Weather</a>
+                    <a href="pages/landslide.html">Landslide</a>
+                    <a href="pages/earthquake.html">Earthquake</a>
+                    <a href="pages/map.html">Map</a>
+
+                    <button
+                        id="mobile-notification-settings-button"
+                        type="button"
+                        class="text-left"
+                    >
+                        🔔 Notifications
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                <div>
+                    <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold bg-primary/10 text-primary mb-4">
+                        Local Disaster Monitoring
+                    </span>
+
+                    <h2 class="text-4xl md:text-5xl font-bold leading-tight">
+                        Stay Aware.
+                        <span class="text-primary">Stay Safe.</span>
+                    </h2>
+
+                    <p class="mt-5 text-gray-600 text-lg max-w-xl">
+                        TerraGuard monitors local weather, landslide risk and earthquake activity
+                        to provide a simple overview of potential disaster conditions.
+                    </p>
+
+                    <div class="mt-7 p-4 bg-white rounded-xl shadow-sm border border-gray-200 max-w-md">
+                        <label
+                            for="location-input"
+                            class="block text-sm font-semibold mb-2"
+                        >
+                            Monitoring Location
+                        </label>
+
+                        <div class="flex gap-2">
+                            <div class="relative flex-1">
+                                <input
+                                    id="location-input"
+                                    type="text"
+                                    autocomplete="off"
+                                    placeholder="Search any location in India"
+                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
+                                >
+
+                                <div
+                                    id="location-suggestions"
+                                    class="absolute left-0 right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 hidden overflow-hidden"
+                                ></div>
+                            </div>
+
+                            <button
+                                id="change-location-button"
+                                type="button"
+                                class="px-4 py-2 rounded-lg bg-primary text-cream font-semibold hover:opacity-90 transition"
+                            >
+                                Set
+                            </button>
+                        </div>
+
+                        <p class="text-xs text-gray-500 mt-2">
+                            Search for any city, town, village, or area in India.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="hidden lg:flex justify-center">
+                    <div class="w-72 h-72 rounded-full bg-primary/10 flex items-center justify-center">
+                        <div class="w-56 h-56 rounded-full bg-primary/20 flex items-center justify-center">
+                            <span class="text-8xl">🌍</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h2 class="text-2xl font-bold">Disaster Overview</h2>
+                    <p class="text-gray-600 text-sm mt-1">
+                        Current conditions for
+                        <span data-dashboard-location class="font-semibold">Loading...</span>
+                    </p>
+                </div>
+
+                <span data-last-updated class="text-sm text-gray-500">
+                    Updating...
+                </span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <a
+                    href="pages/weather.html"
+                    class="risk-card bg-white rounded-xl p-6 shadow-sm border border-gray-200 block"
+                >
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm text-gray-500">Weather</p>
+                            <h3
+                                data-dashboard-weather-condition
+                                class="text-xl font-bold mt-1"
+                            >
+                                Loading...
+                            </h3>
+                        </div>
+
+                        <span class="text-3xl">🌤️</span>
+                    </div>
+
+                    <div class="mt-5">
+                        <span
+                            data-dashboard-weather-temperature
+                            class="text-3xl font-bold"
+                        >
+                            --°C
+                        </span>
+                    </div>
+
+                    <div class="mt-3">
+                        <span
+                            data-dashboard-weather-risk
+                            class="risk-badge-low"
+                        >
+                            Checking Risk
+                        </span>
+                    </div>
+                </a>
+
+                <a
+                    href="pages/landslide.html"
+                    class="risk-card bg-white rounded-xl p-6 shadow-sm border border-gray-200 block"
+                >
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm text-gray-500">Landslide</p>
+                            <h3
+                                data-dashboard-landslide-risk
+                                class="text-xl font-bold mt-1"
+                            >
+                                Checking...
+                            </h3>
+                        </div>
+
+                        <span class="text-3xl">🏔️</span>
+                    </div>
+
+                    <div class="mt-5">
+                        <span
+                            data-dashboard-landslide-score
+                            class="text-3xl font-bold"
+                        >
+                            --%
+                        </span>
+
+                        <span class="text-gray-500 text-sm">
+                            risk score
+                        </span>
+                    </div>
+
+                    <div class="mt-3">
+                        <span
+                            data-dashboard-landslide-status
+                            class="risk-badge-low"
+                        >
+                            Monitoring
+                        </span>
+                    </div>
+                </a>
+
+                <a
+                    href="pages/earthquake.html"
+                    class="risk-card bg-white rounded-xl p-6 shadow-sm border border-gray-200 block"
+                >
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm text-gray-500">Earthquake</p>
+                            <h3
+                                data-dashboard-earthquake-place
+                                class="text-xl font-bold mt-1"
+                            >
+                                Checking...
+                            </h3>
+                        </div>
+
+                        <span class="text-3xl">🌎</span>
+                    </div>
+
+                    <div class="mt-5">
+                        <span
+                            data-dashboard-earthquake-magnitude
+                            class="text-3xl font-bold"
+                        >
+                            M --
+                        </span>
+                    </div>
+
+                    <div class="mt-3">
+                        <span
+                            data-dashboard-earthquake-risk
+                            class="risk-badge-low"
+                        >
+                            Checking Risk
+                        </span>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div>
+                        <p class="text-sm text-gray-500">Current Weather</p>
+                        <h2
+                            data-dashboard-weather-title
+                            class="text-2xl font-bold mt-1"
+                        >
+                            Loading weather...
+                        </h2>
+                    </div>
+
+                    <a
+                        href="pages/weather.html"
+                        class="px-5 py-2 rounded-lg bg-primary text-cream font-semibold text-center hover:opacity-90 transition"
+                    >
+                        View Weather Details
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-5 mt-6">
+                    <div>
+                        <p class="text-sm text-gray-500">Temperature</p>
+                        <p
+                            data-dashboard-weather-temp-detail
+                            class="text-xl font-bold mt-1"
+                        >
+                            --°C
+                        </p>
+                    </div>
+
+                    <div>
+                        <p class="text-sm text-gray-500">Humidity</p>
+                        <p
+                            data-dashboard-weather-humidity
+                            class="text-xl font-bold mt-1"
+                        >
+                            --%
+                        </p>
+                    </div>
+
+                    <div>
+                        <p class="text-sm text-gray-500">Wind</p>
+                        <p
+                            data-dashboard-weather-wind
+                            class="text-xl font-bold mt-1"
+                        >
+                            -- km/h
+                        </p>
+                    </div>
+
+                    <div>
+                        <p class="text-sm text-gray-500">Rain Probability</p>
+                        <p
+                            data-dashboard-weather-rain
+                            class="text-xl font-bold mt-1"
+                        >
+                            --%
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex items-center justify-between mb-5">
+                <div>
+                    <h2 class="text-2xl font-bold">Monitoring Map</h2>
+                    <p class="text-gray-600 text-sm mt-1">
+                        Geographic view of disaster activity
+                    </p>
+                </div>
+
+                <a
+                    href="pages/map.html"
+                    class="text-primary font-semibold hover:underline"
+                >
+                    Open Full Map →
+                </a>
+            </div>
+
+            <div class="map-placeholder bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+                <div class="h-80 flex flex-col items-center justify-center bg-primary/5">
+                    <span class="text-6xl mb-4">🗺️</span>
+
+                    <h3 class="text-xl font-bold">
+                        Interactive Disaster Map
+                    </h3>
+
+                    <p class="text-gray-500 text-sm mt-2 text-center px-4">
+                        View earthquake and disaster monitoring locations on the interactive map.
+                    </p>
+
+                    <a
+                        href="pages/map.html"
+                        class="mt-5 px-5 py-2 rounded-lg bg-primary text-cream font-semibold hover:opacity-90 transition"
+                    >
+                        View Map
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-12">
+            <div class="mb-5">
+                <h2 class="text-2xl font-bold">Recent Alerts</h2>
+                <p class="text-gray-600 text-sm mt-1">
+                    Important monitoring updates
+                </p>
+            </div>
+
+            <div
+                data-alerts-container
+                class="grid grid-cols-1 md:grid-cols-2 gap-5"
+            >
+                <div class="alert-card">
+                    <div class="alert-icon">🔄</div>
+
+                    <div class="alert-content">
+                        <h3 class="alert-title">Checking Alerts</h3>
+
+                        <p class="alert-message">
+                            TerraGuard is checking current disaster conditions for the selected location.
+                        </p>
+
+                        <span class="alert-time">Updating...</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div
+        id="notification-settings-modal"
+        class="fixed inset-0 bg-black/40 z-[100] hidden items-center justify-center px-4"
+    >
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h2 class="text-2xl font-bold">
+                        Notification Settings
+                    </h2>
+
+                    <p class="text-sm text-gray-500 mt-1">
+                        Choose which alerts TerraGuard should notify you about.
+                    </p>
+                </div>
+
+                <button
+                    id="close-notification-settings"
+                    type="button"
+                    class="text-2xl text-gray-500 hover:text-dark"
+                    aria-label="Close notification settings"
+                >
+                    ×
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <label class="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">🌧️</span>
+
+                        <div>
+                            <p class="font-semibold">Weather Alerts</p>
+                            <p class="text-xs text-gray-500">
+                                Rain, storms and severe weather
+                            </p>
+                        </div>
+                    </div>
+
+                    <input
+                        type="checkbox"
+                        id="notification-weather"
+                        class="w-5 h-5 accent-primary"
+                    >
+                </label>
+
+                <label class="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">🏔️</span>
+
+                        <div>
+                            <p class="font-semibold">Landslide Alerts</p>
+                            <p class="text-xs text-gray-500">
+                                High-risk landslide conditions
+                            </p>
+                        </div>
+                    </div>
+
+                    <input
+                        type="checkbox"
+                        id="notification-landslide"
+                        class="w-5 h-5 accent-primary"
+                    >
+                </label>
+
+                <label class="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">🌎</span>
+
+                        <div>
+                            <p class="font-semibold">Earthquake Alerts</p>
+                            <p class="text-xs text-gray-500">
+                                Significant earthquake activity
+                            </p>
+                        </div>
+                    </div>
+
+                    <input
+                        type="checkbox"
+                        id="notification-earthquake"
+                        class="w-5 h-5 accent-primary"
+                    >
+                </label>
+            </div>
+
+            <div class="flex justify-end gap-3 mt-6">
+                <button
+                    id="cancel-notification-settings"
+                    type="button"
+                    class="px-4 py-2 rounded-lg border border-gray-300 font-semibold hover:bg-gray-50"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    id="save-notification-settings"
+                    type="button"
+                    class="px-5 py-2 rounded-lg bg-primary text-cream font-semibold hover:opacity-90"
+                >
+                    Save Preferences
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-cream">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-2">TerraGuard</h3>
+
+                    <p class="text-sm opacity-70">
+                        Local Disaster Monitoring System for weather, landslides and earthquakes.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold mb-3">Quick Links</h4>
+
+                    <div class="flex flex-col gap-2 text-sm opacity-80">
+                        <a href="pages/weather.html" class="hover:text-secondary">Weather</a>
+                        <a href="pages/landslide.html" class="hover:text-secondary">Landslide</a>
+                        <a href="pages/earthquake.html" class="hover:text-secondary">Earthquake</a>
+                        <a href="pages/map.html" class="hover:text-secondary">Map</a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold mb-3">System Status</h4>
+
+                    <div class="flex items-center gap-2 text-sm">
+                        <span class="status-dot status-online"></span>
+                        <span>Monitoring System Online</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 mt-8 pt-5 text-sm opacity-60">
+                © 2026 TerraGuard. Weather • Landslide • Earthquake Monitoring.
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/utils.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/weather.js"></script>
+    <script src="js/landslide.js"></script>
+    <script src="js/earthquake.js"></script>
+    <script src="js/alerts.js"></script>
+
+    <script>
+        async function loadDashboardData() {
+            const savedLocation =
+                localStorage.getItem("terraGuardLocation");
+
+            const location =
+                savedLocation?.trim() || "Delhi";
+
+            const locationInput =
+                document.getElementById("location-input");
+
+            if (locationInput) {
+                locationInput.value = location;
+            }
+
+            document
+                .querySelectorAll("[data-dashboard-location]")
+                .forEach(element => {
+                    element.textContent = location;
+                });
+
+            const navbarLocation =
+                document.getElementById("navbar-location");
+
+            if (navbarLocation) {
+                navbarLocation.textContent = location;
+            }
+
+            const [
+                weather,
+                landslide,
+                earthquake
+            ] = await Promise.all([
+                window.TerraGuardWeather?.fetchWeatherData
+                    ? window.TerraGuardWeather.fetchWeatherData(location)
+                    : Promise.resolve(null),
+
+                window.TerraGuardLandslide?.fetchLandslideData
+                    ? window.TerraGuardLandslide.fetchLandslideData(location)
+                    : Promise.resolve(null),
+
+                window.TerraGuardEarthquake?.fetchEarthquakeData
+                    ? window.TerraGuardEarthquake.fetchEarthquakeData(location)
+                    : Promise.resolve(null)
+            ]);
+
+            window.TerraGuardWeatherData = weather;
+            window.TerraGuardLandslideData = landslide;
+            window.TerraGuardEarthquakeData = earthquake;
+
+            if (weather) {
+                setDashboardText(
+                    "[data-dashboard-weather-condition]",
+                    weather.condition || "Unknown"
+                );
+
+                setDashboardText(
+                    "[data-dashboard-weather-temperature]",
+                    `${weather.temperature ?? "--"}°C`
+                );
+
+                setDashboardText(
+                    "[data-dashboard-weather-title]",
+                    `${weather.condition || "Unknown"} in ${location}`
+                );
+
+                setDashboardText(
+                    "[data-dashboard-weather-temp-detail]",
+                    `${weather.temperature ?? "--"}°C`
+                );
+
+                setDashboardText(
+                    "[data-dashboard-weather-humidity]",
+                    `${weather.humidity ?? "--"}%`
+                );
+
+                setDashboardText(
+                    "[data-dashboard-weather-wind]",
+                    `${weather.wind ?? "--"} km/h`
+                );
+
+                setDashboardText(
+                    "[data-dashboard-weather-rain]",
+                    `${weather.rainfallProbability ?? "--"}%`
+                );
+
+                updateDashboardRisk(
+                    "[data-dashboard-weather-risk]",
+                    weather.risk
+                );
+            } else {
+                setDashboardText(
+                    "[data-dashboard-weather-condition]",
+                    "Unavailable"
+                );
+
+                setDashboardText(
+                    "[data-dashboard-weather-risk]",
+                    "Unavailable"
+                );
+            }
+
+            if (landslide) {
+                const result =
+                    window.TerraGuardLandslide.calculateRisk(
+                        landslide
+                    );
+
+                const landslideRisk =
+                    getRiskValue(result.risk);
+
+                setDashboardText(
+                    "[data-dashboard-landslide-risk]",
+                    landslideRisk
+                );
+
+                const maximumScore =
+                    Number(result.maximumScore) || 33;
+
+                const percentage =
+                    result.percentage ??
+                    Math.round(
+                        ((Number(result.score) || 0) /
+                            maximumScore) *
+                            100
+                    );
+
+                setDashboardText(
+                    "[data-dashboard-landslide-score]",
+                    `${Math.min(
+                        100,
+                        Math.max(0, percentage)
+                    )}%`
+                );
+
+                updateDashboardRisk(
+                    "[data-dashboard-landslide-status]",
+                    landslideRisk
+                );
+            } else {
+                setDashboardText(
+                    "[data-dashboard-landslide-risk]",
+                    "Unavailable"
+                );
+
+                setDashboardText(
+                    "[data-dashboard-landslide-score]",
+                    "--%"
+                );
+
+                setDashboardText(
+                    "[data-dashboard-landslide-status]",
+                    "Unavailable"
+                );
+            }
+
+            if (earthquake) {
+                setDashboardText(
+                    "[data-dashboard-earthquake-place]",
+                    earthquake.place ||
+                        "No recent activity"
+                );
+
+                const magnitude =
+                    Number(
+                        earthquake.magnitude
+                    );
+
+                setDashboardText(
+                    "[data-dashboard-earthquake-magnitude]",
+                    magnitude > 0
+                        ? `M ${magnitude.toFixed(1)}`
+                        : "M 0.0"
+                );
+
+                updateDashboardRisk(
+                    "[data-dashboard-earthquake-risk]",
+                    earthquake.risk
+                );
+            } else {
+                setDashboardText(
+                    "[data-dashboard-earthquake-place]",
+                    "Unavailable"
+                );
+
+                setDashboardText(
+                    "[data-dashboard-earthquake-risk]",
+                    "Unavailable"
+                );
+            }
+
+            if (
+                window.TerraGuardAlerts?.initializeAlerts
+            ) {
+                await window.TerraGuardAlerts.initializeAlerts(
+                    location,
+                    {
+                        weather,
+                        landslide,
+                        earthquake
+                    }
+                );
+            }
+
+            document
+                .querySelectorAll("[data-last-updated]")
+                .forEach(element => {
+                    element.textContent =
+                        `Updated at ${new Date().toLocaleTimeString(
+                            "en-IN",
+                            {
+                                hour: "2-digit",
+                                minute: "2-digit"
+                            }
+                        )}`;
+                });
+        }
+
+        setInterval(
+            loadDashboardData,
+            10 * 60 * 1000
+        );
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            loadDashboardData
+        );
+
+        function setDashboardText(
+            selector,
+            value
+        ) {
+            const element =
+                document.querySelector(
+                    selector
+                );
+
+            if (element) {
+                element.textContent =
+                    value;
+            }
+        }
+
+        function getRiskValue(risk) {
+            if (
+                risk === null ||
+                risk === undefined
+            ) {
+                return "Unknown";
+            }
+
+            if (
+                typeof risk ===
+                "string"
+            ) {
+                return risk;
+            }
+
+            if (
+                typeof risk ===
+                "object"
+            ) {
+                return (
+                    risk.level ??
+                    risk.risk ??
+                    risk.name ??
+                    risk.status ??
+                    "Unknown"
+                );
+            }
+
+            return String(risk);
+        }
+
+        function updateDashboardRisk(
+            selector,
+            risk
+        ) {
+            const element =
+                document.querySelector(
+                    selector
+                );
+
+            if (!element) return;
+
+            const riskValue =
+                getRiskValue(risk);
+
+            element.textContent =
+                riskValue;
+
+            element.className =
+                getRiskLevelClass(
+                    riskValue
+                );
+        }
+
+        const notificationModal =
+            document.getElementById(
+                "notification-settings-modal"
+            );
+
+        const notificationOpenButton =
+            document.getElementById(
+                "notification-settings-button"
+            );
+
+        const mobileNotificationOpenButton =
+            document.getElementById(
+                "mobile-notification-settings-button"
+            );
+
+        const notificationCloseButton =
+            document.getElementById(
+                "close-notification-settings"
+            );
+
+        const notificationCancelButton =
+            document.getElementById(
+                "cancel-notification-settings"
+            );
+
+        const notificationSaveButton =
+            document.getElementById(
+                "save-notification-settings"
+            );
+
+        const weatherNotification =
+            document.getElementById(
+                "notification-weather"
+            );
+
+        const landslideNotification =
+            document.getElementById(
+                "notification-landslide"
+            );
+
+        const earthquakeNotification =
+            document.getElementById(
+                "notification-earthquake"
+            );
+
+        function loadNotificationSettings() {
+            let settings = {
+                weather: true,
+                landslide: true,
+                earthquake: true
+            };
+
+            const alertPreferences =
+                localStorage.getItem(
+                    "terraGuardAlertPreferences"
+                );
+
+            const notificationSettings =
+                localStorage.getItem(
+                    "terraGuardNotificationSettings"
+                );
+
+            try {
+                if (alertPreferences) {
+                    const saved =
+                        JSON.parse(
+                            alertPreferences
+                        );
+
+                    settings = {
+                        ...settings,
+                        ...saved
+                    };
+                } else if (
+                    notificationSettings
+                ) {
+                    const saved =
+                        JSON.parse(
+                            notificationSettings
+                        );
+
+                    settings = {
+                        ...settings,
+                        ...saved
+                    };
+                }
+            } catch (error) {
+                console.error(
+                    "Unable to load notification settings:",
+                    error
+                );
+            }
+
+            weatherNotification.checked =
+                settings.weather !== false;
+
+            landslideNotification.checked =
+                settings.landslide !== false;
+
+            earthquakeNotification.checked =
+                settings.earthquake !== false;
+        }
+
+        function openNotificationSettings() {
+            loadNotificationSettings();
+
+            notificationModal.classList.remove(
+                "hidden"
+            );
+
+            notificationModal.classList.add(
+                "flex"
+            );
+        }
+
+        function closeNotificationSettings() {
+            notificationModal.classList.add(
+                "hidden"
+            );
+
+            notificationModal.classList.remove(
+                "flex"
+            );
+        }
+
+        function saveNotificationSettings() {
+            const settings = {
+                weather:
+                    weatherNotification.checked,
+                landslide:
+                    landslideNotification.checked,
+                earthquake:
+                    earthquakeNotification.checked
+            };
+
+            localStorage.setItem(
+                "terraGuardNotificationSettings",
+                JSON.stringify(settings)
+            );
+
+            let alertPreferences = {
+                weather: true,
+                landslide: true,
+                earthquake: true,
+                minimumSeverity: "High",
+                browser: true,
+                email: false
+            };
+
+            try {
+                const saved =
+                    localStorage.getItem(
+                        "terraGuardAlertPreferences"
+                    );
+
+                if (saved) {
+                    alertPreferences = {
+                        ...alertPreferences,
+                        ...JSON.parse(
+                            saved
+                        )
+                    };
+                }
+            } catch (error) {
+                console.error(
+                    "Unable to read alert preferences:",
+                    error
+                );
+            }
+
+            alertPreferences.weather =
+                settings.weather;
+
+            alertPreferences.landslide =
+                settings.landslide;
+
+            alertPreferences.earthquake =
+                settings.earthquake;
+
+            localStorage.setItem(
+                "terraGuardAlertPreferences",
+                JSON.stringify(
+                    alertPreferences
+                )
+            );
+
+            closeNotificationSettings();
+        }
+
+        if (notificationModal) {
+            notificationOpenButton?.addEventListener(
+                "click",
+                openNotificationSettings
+            );
+
+            mobileNotificationOpenButton?.addEventListener(
+                "click",
+                openNotificationSettings
+            );
+
+            notificationCloseButton?.addEventListener(
+                "click",
+                closeNotificationSettings
+            );
+
+            notificationCancelButton?.addEventListener(
+                "click",
+                closeNotificationSettings
+            );
+
+            notificationSaveButton?.addEventListener(
+                "click",
+                saveNotificationSettings
+            );
+
+            notificationModal.addEventListener(
+                "click",
+                event => {
+                    if (
+                        event.target ===
+                        notificationModal
+                    ) {
+                        closeNotificationSettings();
+                    }
+                }
+            );
+
+            document.addEventListener(
+                "keydown",
+                event => {
+                    if (
+                        event.key ===
+                            "Escape" &&
+                        !notificationModal.classList.contains(
+                            "hidden"
+                        )
+                    ) {
+                        closeNotificationSettings();
+                    }
+                }
+            );
+
+            loadNotificationSettings();
+        }
+    </script>
+
+</body>
+</html>

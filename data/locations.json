@@ -1,0 +1,82 @@
+[
+    {
+        "name": "Delhi",
+        "state": "Delhi",
+        "country": "India",
+        "latitude": 28.6139,
+        "longitude": 77.2090,
+        "type": "city"
+    },
+    {
+        "name": "Ghaziabad",
+        "state": "Uttar Pradesh",
+        "country": "India",
+        "latitude": 28.6692,
+        "longitude": 77.4538,
+        "type": "city"
+    },
+    {
+        "name": "Dehradun",
+        "state": "Uttarakhand",
+        "country": "India",
+        "latitude": 30.3165,
+        "longitude": 78.0322,
+        "type": "city"
+    },
+    {
+        "name": "Shimla",
+        "state": "Himachal Pradesh",
+        "country": "India",
+        "latitude": 31.1048,
+        "longitude": 77.1734,
+        "type": "city"
+    },
+    {
+        "name": "Srinagar",
+        "state": "Jammu and Kashmir",
+        "country": "India",
+        "latitude": 34.0837,
+        "longitude": 74.7973,
+        "type": "city"
+    },
+    {
+        "name": "Gangtok",
+        "state": "Sikkim",
+        "country": "India",
+        "latitude": 27.3389,
+        "longitude": 88.6065,
+        "type": "city"
+    },
+    {
+        "name": "Darjeeling",
+        "state": "West Bengal",
+        "country": "India",
+        "latitude": 27.0410,
+        "longitude": 88.2663,
+        "type": "city"
+    },
+    {
+        "name": "Manali",
+        "state": "Himachal Pradesh",
+        "country": "India",
+        "latitude": 32.2396,
+        "longitude": 77.1887,
+        "type": "city"
+    },
+    {
+        "name": "Mussoorie",
+        "state": "Uttarakhand",
+        "country": "India",
+        "latitude": 30.4598,
+        "longitude": 78.0664,
+        "type": "city"
+    },
+    {
+        "name": "Nainital",
+        "state": "Uttarakhand",
+        "country": "India",
+        "latitude": 29.3919,
+        "longitude": 79.4542,
+        "type": "city"
+    }
+]

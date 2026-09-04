@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>TerraGuard - Disaster Map</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#606C38",
+                        dark: "#283618",
+                        cream: "#FEFAE0",
+                        secondary: "#DDA15E",
+                        accent: "#BC6C25"
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Main CSS -->
+    <link
+        rel="stylesheet"
+        href="../css/style.css"
+    >
+
+    <!-- Component CSS -->
+    <link
+        rel="stylesheet"
+        href="../css/components.css"
+    >
+
+    <!-- Leaflet CSS -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""
+    >
+</head>
+
+<body class="bg-cream text-dark">
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <nav class="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="flex items-center justify-between h-16">
+
+                <!-- Logo -->
+                <a
+                    href="../index.html"
+                    class="flex items-center gap-3"
+                >
+                    <div
+                        class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center"
+                    >
+                        <span class="text-xl">🌍</span>
+                    </div>
+
+                    <div>
+                        <h1 class="font-bold text-lg">
+                            TerraGuard
+                        </h1>
+
+                        <p class="text-xs opacity-70">
+                            Local Disaster Monitoring
+                        </p>
+                    </div>
+                </a>
+
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center gap-6">
+
+                    <a
+                        href="../index.html"
+                        class="hover:text-secondary transition"
+                    >
+                        Dashboard
+                    </a>
+
+                    <a
+                        href="weather.html"
+                        class="hover:text-secondary transition"
+                    >
+                        Weather
+                    </a>
+
+                    <a
+                        href="landslide.html"
+                        class="hover:text-secondary transition"
+                    >
+                        Landslide
+                    </a>
+
+                    <a
+                        href="earthquake.html"
+                        class="hover:text-secondary transition"
+                    >
+                        Earthquake
+                    </a>
+
+                    <a
+                        href="map.html"
+                        class="text-secondary font-semibold"
+                    >
+                        Map
+                    </a>
+
+                </div>
+
+
+                <!-- Location -->
+                <div class="hidden md:flex items-center gap-2">
+
+                    <span class="text-sm opacity-70">
+                        📍
+                    </span>
+
+                    <span
+                        id="navbar-location"
+                        class="text-sm"
+                    >
+                        Delhi
+                    </span>
+
+                </div>
+
+
+                <!-- Mobile Menu Button -->
+                <button
+                    id="mobile-menu-button"
+                    class="md:hidden text-xl"
+                    aria-label="Open menu"
+                >
+                    ☰
+                </button>
+
+            </div>
+
+
+            <!-- Mobile Navigation -->
+            <div
+                id="mobile-menu"
+                class="hidden md:hidden pb-4"
+            >
+
+                <div class="flex flex-col gap-3">
+
+                    <a href="../index.html">
+                        Dashboard
+                    </a>
+
+                    <a href="weather.html">
+                        Weather
+                    </a>
+
+                    <a href="landslide.html">
+                        Landslide
+                    </a>
+
+                    <a href="earthquake.html">
+                        Earthquake
+                    </a>
+
+                    <a
+                        href="map.html"
+                        class="font-semibold"
+                    >
+                        Map
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+    </nav>
+
+
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
+
+    <main>
+
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-6">
+
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+
+                <div>
+
+                    <p
+                        class="text-sm font-semibold text-primary uppercase tracking-wide"
+                    >
+                        Geographic Monitoring
+                    </p>
+
+                    <h2 class="text-3xl md:text-4xl font-bold mt-2">
+                        Disaster Monitoring Map
+                    </h2>
+
+                    <p class="mt-3 text-gray-600 max-w-2xl">
+                        View the selected monitoring location,
+                        recent earthquake activity, and disaster
+                        monitoring areas on an interactive map.
+                    </p>
+
+                </div>
+
+
+                <!-- Refresh -->
+                <button
+                    onclick="TerraGuardMap.refreshMap()"
+                    class="px-5 py-3 rounded-lg bg-primary text-cream font-semibold hover:opacity-90 transition"
+                >
+                    🔄 Refresh Map
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             MAP SECTION
+        ================================================== -->
+
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
+
+            <div class="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-200">
+
+                <!-- Map Header -->
+                <div class="px-5 py-4 border-b border-gray-200">
+
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+
+                        <div>
+
+                            <h3 class="text-lg font-bold">
+                                Live Disaster Map
+                            </h3>
+
+                            <p class="text-sm text-gray-500">
+                                Earthquake data provided by USGS
+                            </p>
+
+                        </div>
+
+
+                        <div class="flex items-center gap-2 text-sm">
+
+                            <span class="status-dot status-online"></span>
+
+                            <span>
+                                Monitoring Active
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Map -->
+                <div
+                    data-map
+                    id="disaster-map"
+                    class="w-full h-[500px] md:h-[600px]"
+                >
+                </div>
+
+
+                <!-- Map Legend -->
+                <div class="p-5 border-t border-gray-200">
+
+                    <h4 class="font-semibold mb-4">
+                        Map Legend
+                    </h4>
+
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+
+                        <!-- Selected Location -->
+                        <div class="flex items-center gap-2">
+
+                            <span
+                                class="w-4 h-4 rounded-full bg-primary border-2 border-white shadow"
+                            ></span>
+
+                            <span class="text-sm">
+                                Selected Location
+                            </span>
+
+                        </div>
+
+
+                        <!-- Low -->
+                        <div class="flex items-center gap-2">
+
+                            <span
+                                class="w-4 h-4 rounded-full"
+                                style="background-color: #606C38;"
+                            ></span>
+
+                            <span class="text-sm">
+                                Low / Safe
+                            </span>
+
+                        </div>
+
+
+                        <!-- Moderate -->
+                        <div class="flex items-center gap-2">
+
+                            <span
+                                class="w-4 h-4 rounded-full"
+                                style="background-color: #DDA15E;"
+                            ></span>
+
+                            <span class="text-sm">
+                                Moderate
+                            </span>
+
+                        </div>
+
+
+                        <!-- High -->
+                        <div class="flex items-center gap-2">
+
+                            <span
+                                class="w-4 h-4 rounded-full"
+                                style="background-color: #BC6C25;"
+                            ></span>
+
+                            <span class="text-sm">
+                                High / Critical
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             INFORMATION CARDS
+        ================================================== -->
+
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+
+                <!-- Earthquake -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+
+                    <div class="text-3xl mb-3">
+                        🌎
+                    </div>
+
+                    <h3 class="text-lg font-bold mb-2">
+                        Earthquake Activity
+                    </h3>
+
+                    <p class="text-sm text-gray-600">
+                        Recent earthquake events from the
+                        USGS earthquake monitoring service
+                        are displayed around the selected
+                        location.
+                    </p>
+
+                </div>
+
+
+                <!-- Landslide -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+
+                    <div class="text-3xl mb-3">
+                        🏔️
+                    </div>
+
+                    <h3 class="text-lg font-bold mb-2">
+                        Landslide Monitoring
+                    </h3>
+
+                    <p class="text-sm text-gray-600">
+                        Landslide-prone areas can be displayed
+                        on the map along with their calculated
+                        risk levels.
+                    </p>
+
+                </div>
+
+
+                <!-- Location -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+
+                    <div class="text-3xl mb-3">
+                        📍
+                    </div>
+
+                    <h3 class="text-lg font-bold mb-2">
+                        Location Based
+                    </h3>
+
+                    <p class="text-sm text-gray-600">
+                        TerraGuard uses geographic coordinates
+                        to provide disaster information relevant
+                        to the selected location.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="bg-dark text-cream mt-8">
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                <div>
+
+                    <h3 class="text-xl font-bold mb-2">
+                        TerraGuard
+                    </h3>
+
+                    <p class="text-sm opacity-70">
+                        Local Disaster Monitoring System
+                        for weather, landslides and earthquakes.
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <h4 class="font-semibold mb-3">
+                        Quick Links
+                    </h4>
+
+                    <div class="flex flex-col gap-2 text-sm opacity-80">
+
+                        <a
+                            href="../index.html"
+                            class="hover:text-secondary"
+                        >
+                            Dashboard
+                        </a>
+
+                        <a
+                            href="weather.html"
+                            class="hover:text-secondary"
+                        >
+                            Weather
+                        </a>
+
+                        <a
+                            href="landslide.html"
+                            class="hover:text-secondary"
+                        >
+                            Landslide
+                        </a>
+
+                        <a
+                            href="earthquake.html"
+                            class="hover:text-secondary"
+                        >
+                            Earthquake
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <div>
+
+                    <h4 class="font-semibold mb-3">
+                        System Status
+                    </h4>
+
+                    <div class="flex items-center gap-2 text-sm">
+
+                        <span class="status-dot status-online"></span>
+
+                        <span>
+                            Monitoring System Online
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="border-t border-white/10 mt-8 pt-5 text-sm opacity-60">
+
+                © 2026 TerraGuard.
+                Weather • Landslide • Earthquake Monitoring.
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =====================================================
+         SCRIPTS
+    ====================================================== -->
+
+    <!-- Leaflet JS -->
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""
+    ></script>
+
+
+    <!-- TerraGuard Scripts -->
+    <script src="../js/utils.js"></script>
+
+    <script src="../js/main.js"></script>
+
+    <script src="../js/map.js"></script>
+
+
+</body>
+</html>

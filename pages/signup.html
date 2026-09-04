@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>TerraGuard - Create Account</title>
+
+    <!-- ============================================================
+         GOOGLE FONT
+    ============================================================= -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- ============================================================
+         TAILWIND CSS
+    ============================================================= -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        terra: {
+                            primary: "#606c38",
+                            dark: "#283618",
+                            cream: "#fefae0",
+                            accent: "#dda15e",
+                            brown: "#bc6c25"
+                        }
+                    },
+
+                    fontFamily: {
+                        inter: ["Inter", "sans-serif"]
+                    }
+                }
+            }
+        };
+    </script>
+
+
+    <!-- ============================================================
+         AUTH CSS
+    ============================================================= -->
+
+    <link
+        rel="stylesheet"
+        href="../css/auth.css"
+    >
+
+</head>
+
+
+<body class="font-inter bg-terra-cream min-h-screen">
+
+
+    <!-- ============================================================
+         MAIN CONTAINER
+    ============================================================= -->
+
+    <main class="min-h-screen flex items-center justify-center p-6">
+
+        <div
+            class="w-full max-w-6xl min-h-[650px] bg-white rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-2"
+        >
+
+
+            <!-- ====================================================
+                 LEFT SIDE - BRANDING
+            ===================================================== -->
+
+            <section
+                class="hidden lg:flex relative bg-terra-dark text-terra-cream p-12 flex-col justify-between overflow-hidden"
+            >
+
+                <!-- Decorative shapes -->
+
+                <div
+                    class="absolute -top-32 -left-32 w-80 h-80 rounded-full bg-terra-primary opacity-30"
+                ></div>
+
+                <div
+                    class="absolute -bottom-40 -right-32 w-96 h-96 rounded-full bg-terra-brown opacity-30"
+                ></div>
+
+
+                <!-- Logo -->
+
+                <div class="relative z-10">
+
+                    <div class="flex items-center gap-3">
+
+                        <div
+                            class="w-12 h-12 rounded-xl bg-terra-accent flex items-center justify-center text-terra-dark text-2xl"
+                        >
+                            🛡️
+                        </div>
+
+                        <div>
+
+                            <h1 class="text-2xl font-extrabold tracking-wide">
+                                TerraGuard
+                            </h1>
+
+                            <p class="text-sm text-terra-cream/70">
+                                Local Disaster Monitoring
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Main Message -->
+
+                <div class="relative z-10">
+
+                    <p
+                        class="text-terra-accent font-semibold text-sm uppercase tracking-widest mb-4"
+                    >
+                        Your safety starts here
+                    </p>
+
+                    <h2
+                        class="text-5xl font-extrabold leading-tight mb-6"
+                    >
+                        Create your<br>
+                        safety profile.
+                    </h2>
+
+                    <p
+                        class="text-terra-cream/75 text-lg leading-relaxed max-w-md"
+                    >
+                        Choose your monitoring location and customize
+                        the alerts you want to receive from TerraGuard.
+                    </p>
+
+                </div>
+
+
+                <!-- Feature Cards -->
+
+                <div class="relative z-10 grid grid-cols-3 gap-4">
+
+                    <div
+                        class="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/10"
+                    >
+
+                        <div class="text-2xl mb-2">
+                            📍
+                        </div>
+
+                        <p class="font-semibold text-sm">
+                            Your Location
+                        </p>
+
+                        <p class="text-xs text-terra-cream/60 mt-1">
+                            Local monitoring
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        class="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/10"
+                    >
+
+                        <div class="text-2xl mb-2">
+                            🔔
+                        </div>
+
+                        <p class="font-semibold text-sm">
+                            Smart Alerts
+                        </p>
+
+                        <p class="text-xs text-terra-cream/60 mt-1">
+                            Your preferences
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        class="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/10"
+                    >
+
+                        <div class="text-2xl mb-2">
+                            🛡️
+                        </div>
+
+                        <p class="font-semibold text-sm">
+                            Stay Safe
+                        </p>
+
+                        <p class="text-xs text-terra-cream/60 mt-1">
+                            Stay prepared
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ====================================================
+                 RIGHT SIDE - SIGNUP FORM
+            ===================================================== -->
+
+            <section
+                class="flex items-center justify-center p-8 sm:p-12 lg:p-16"
+            >
+
+                <div class="w-full max-w-md">
+
+
+                    <!-- Mobile Logo -->
+
+                    <div
+                        class="lg:hidden flex items-center gap-3 mb-8"
+                    >
+
+                        <div
+                            class="w-11 h-11 rounded-xl bg-terra-primary flex items-center justify-center text-xl"
+                        >
+                            🛡️
+                        </div>
+
+                        <div>
+
+                            <h1
+                                class="text-xl font-extrabold text-terra-dark"
+                            >
+                                TerraGuard
+                            </h1>
+
+                            <p class="text-xs text-gray-500">
+                                Local Disaster Monitoring
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Heading -->
+
+                    <div class="mb-7">
+
+                        <p
+                            class="text-terra-brown font-semibold text-sm mb-2"
+                        >
+                            Get started
+                        </p>
+
+                        <h2
+                            class="text-4xl font-extrabold text-terra-dark mb-3"
+                        >
+                            Create account
+                        </h2>
+
+                        <p class="text-gray-500">
+                            Create your TerraGuard account to begin monitoring your location.
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- =================================================
+                         SIGNUP FORM
+                    ================================================== -->
+
+                    <form
+                        id="signup-form"
+                        class="space-y-4"
+                    >
+
+
+                        <!-- Full Name -->
+
+                        <div>
+
+                            <label
+                                for="name"
+                                class="block text-sm font-semibold text-terra-dark mb-2"
+                            >
+                                Full name
+                            </label>
+
+                            <div class="relative">
+
+                                <span
+                                    class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                                >
+                                    👤
+                                </span>
+
+                                <input
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    autocomplete="name"
+                                    placeholder="Enter your full name"
+                                    required
+                                    class="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-terra-primary/30 focus:border-terra-primary transition"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- Email -->
+
+                        <div>
+
+                            <label
+                                for="email"
+                                class="block text-sm font-semibold text-terra-dark mb-2"
+                            >
+                                Email address
+                            </label>
+
+                            <div class="relative">
+
+                                <span
+                                    class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                                >
+                                    ✉️
+                                </span>
+
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    autocomplete="email"
+                                    placeholder="you@example.com"
+                                    required
+                                    class="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-terra-primary/30 focus:border-terra-primary transition"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- Password -->
+
+                        <div>
+
+                            <label
+                                for="password"
+                                class="block text-sm font-semibold text-terra-dark mb-2"
+                            >
+                                Password
+                            </label>
+
+                            <div class="relative">
+
+                                <span
+                                    class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                                >
+                                    🔒
+                                </span>
+
+                                <input
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    autocomplete="new-password"
+                                    placeholder="Create a password"
+                                    required
+                                    minlength="8"
+                                    class="w-full pl-12 pr-12 py-3.5 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-terra-primary/30 focus:border-terra-primary transition"
+                                >
+
+                                <button
+                                    type="button"
+                                    id="toggle-password"
+                                    aria-label="Show password"
+                                    class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-terra-primary transition"
+                                >
+                                    👁️
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- Confirm Password -->
+
+                        <div>
+
+                            <label
+                                for="confirm-password"
+                                class="block text-sm font-semibold text-terra-dark mb-2"
+                            >
+                                Confirm password
+                            </label>
+
+                            <div class="relative">
+
+                                <span
+                                    class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                                >
+                                    🔐
+                                </span>
+
+                                <input
+                                    type="password"
+                                    id="confirm-password"
+                                    name="confirm_password"
+                                    autocomplete="new-password"
+                                    placeholder="Confirm your password"
+                                    required
+                                    minlength="8"
+                                    class="w-full pl-12 pr-12 py-3.5 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-terra-primary/30 focus:border-terra-primary transition"
+                                >
+
+                                <button
+                                    type="button"
+                                    id="toggle-confirm-password"
+                                    aria-label="Show confirm password"
+                                    class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-terra-primary transition"
+                                >
+                                    👁️
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                        
+
+
+
+                        <!-- Error -->
+
+                        <div
+                            id="signup-error"
+                            class="hidden rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm p-3"
+                        >
+                        </div>
+
+
+
+                        <!-- Success -->
+
+                        <div
+                            id="signup-success"
+                            class="hidden rounded-xl bg-green-50 border border-green-200 text-green-700 text-sm p-3"
+                        >
+                        </div>
+
+
+
+                        <!-- Create Account -->
+
+                        <button
+                            type="submit"
+                            id="signup-button"
+                            class="w-full py-3.5 px-6 rounded-xl bg-terra-primary text-white font-bold hover:bg-terra-dark focus:outline-none focus:ring-4 focus:ring-terra-primary/20 transition duration-200 shadow-lg shadow-terra-primary/20"
+                        >
+
+                            <span id="signup-button-text">
+                                Create account
+                            </span>
+
+                        </button>
+
+                    </form>
+
+
+
+                    <!-- Login Link -->
+
+                    <p class="text-center text-gray-500 text-sm mt-7">
+
+                        Already have an account?
+
+                        <a
+                            href="login.html"
+                            class="font-bold text-terra-primary hover:text-terra-brown transition"
+                        >
+                            Sign in
+                        </a>
+
+                    </p>
+
+
+
+                    <!-- Security Notice -->
+
+                    <div
+                        class="mt-6 flex items-start gap-3 p-4 rounded-xl bg-terra-cream border border-terra-accent/30"
+                    >
+
+                        <span class="text-lg">
+                            🛡️
+                        </span>
+
+                        <p
+                            class="text-xs text-terra-dark/70 leading-relaxed"
+                        >
+                            Your account will be used to securely save
+                            your monitoring location and alert preferences.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- ============================================================
+         AUTH JAVASCRIPT
+    ============================================================= -->
+
+    <script src="../js/auth.js"></script>
+
+</body>
+
+</html>
