@@ -21,6 +21,12 @@ function getSetupElement(id) {
     return document.getElementById(id);
 }
 
+function escapeHTML(value) {
+    const div = document.createElement("div");
+    div.textContent = value ?? "";
+    return div.innerHTML;
+}
+
 function showSetupError(message) {
     const errorBox = getSetupElement("location-error");
 
@@ -540,6 +546,7 @@ async function finishSetup() {
 
     if (button) {
         button.disabled = true;
+
         button.classList.add(
             "opacity-70",
             "cursor-wait"
