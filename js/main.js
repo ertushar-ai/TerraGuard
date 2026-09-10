@@ -3,17 +3,76 @@ const terraGuardDefaultLocation = "Delhi";
 let locationSearchTimeout = null;
 let locationSearchRequestId = 0;
 
+function escapeHTML(value) {
+    if (typeof window.TerraGuardUtils?.escapeHTML === "function") {
+        return window.TerraGuardUtils.escapeHTML(value);
+    }
+
+    const element = document.createElement("div");
+    element.textContent = value ?? "";
+    return element.innerHTML;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     initializeDashboard();
     initializeButtons();
     initializeMobileMenu();
     initializeLocation();
     updateLastUpdated();
+    updateNavbarAuth();
 });
 
 function initializeDashboard() {
     const savedLocation = localStorage.getItem("terraGuardLocation") || terraGuardDefaultLocation;
     updateLocationDisplays(savedLocation);
+}
+function updateNavbarAuth() {
+    const loginButton =
+        document.getElementById("navbar-login");
+
+    const signupButton =
+        document.getElementById("navbar-signup");
+
+    const userContainer =
+        document.getElementById("navbar-user");
+
+    if (
+        !loginButton ||
+        !signupButton ||
+        !userContainer
+    ) {
+        return;
+    }
+
+    const loggedIn =
+        window.TerraGuardAuth &&
+        window.TerraGuardAuth.isLoggedIn();
+
+    if (loggedIn) {
+        loginButton.style.display = "none";
+        signupButton.style.display = "none";
+        userContainer.style.display = "flex";
+
+        const mobileLogin = document.getElementById("mobile-navbar-login");
+        const mobileSignup = document.getElementById("mobile-navbar-signup");
+        const mobileUser = document.getElementById("mobile-navbar-user");
+
+        if (mobileLogin) mobileLogin.style.display = "none";
+        if (mobileSignup) mobileSignup.style.display = "none";
+        if (mobileUser) mobileUser.style.display = "flex";
+    } else {
+        loginButton.style.display = "";
+        signupButton.style.display = "";
+        userContainer.style.display = "none";
+
+        const mobileLogin = document.getElementById("mobile-navbar-login");
+        const mobileSignup = document.getElementById("mobile-navbar-signup");
+        const mobileUser = document.getElementById("mobile-navbar-user");
+
+        if (mobileLogin) mobileLogin.style.display = "";
+        if (mobileSignup) mobileSignup.style.display = "";
+        if (mobileUser) mobileUser.style.display = "none";
+    }
 }
 
 function initializeLocation() {
@@ -421,3 +480,22 @@ window.TerraGuard = {
     getSavedCoordinates,
     getSavedLocationData
 };
+// TerraGuard Service Worker Registration
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker
+            .register("/sw.js")
+            .then(registration => {
+                console.log(
+                    "TerraGuard Service Worker registered:",
+                    registration.scope
+                );
+            })
+            .catch(error => {
+                console.error(
+                    "TerraGuard Service Worker registration failed:",
+                    error
+                );
+            });
+    });
+}

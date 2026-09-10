@@ -108,6 +108,32 @@ async function fetchWeatherData(location) {
         throw new Error(`Coordinates not found for location: ${location}`);
     }
 
+    try {
+        if (window.TerraGuardAPI && typeof window.TerraGuardAPI.weather === "function") {
+            const data = await window.TerraGuardAPI.weather(coordinates.latitude, coordinates.longitude, location);
+            if (data && data.temperature !== undefined) {
+                return {
+                    location: data.location || location,
+                    latitude: data.latitude,
+                    longitude: data.longitude,
+                    temperature: data.temperature,
+                    apparent_temperature: data.feels_like !== undefined ? data.feels_like : data.feelsLike,
+                    relative_humidity_2m: data.humidity,
+                    wind_speed_10m: data.wind,
+                    rainfall_probability: data.rainfall_probability !== undefined ? data.rainfall_probability : data.rainfallProbability,
+                    precipitation: data.precipitation,
+                    rain: data.rain,
+                    weather_code: data.weather_code !== undefined ? data.weather_code : data.weatherCode,
+                    condition: data.condition,
+                    time: data.last_updated || data.lastUpdated,
+                    risk: data.risk || { level: "Low", score: 0, reasons: [] }
+                };
+            }
+        }
+    } catch (backendError) {
+        console.warn("FastAPI weather endpoint failed, using direct Open-Meteo fallback:", backendError);
+    }
+
     const url =
         "https://api.open-meteo.com/v1/forecast" +
         `?latitude=${coordinates.latitude}` +

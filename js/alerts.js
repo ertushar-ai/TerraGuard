@@ -127,20 +127,27 @@ function applyAlertPreferences(alerts) {
     });
 }
 
-async function initializeAlerts(
-    location = null,
-    monitoringData = {}
-) {
+async function checkAlerts(monitoringData = {}) {
     const currentLocation =
-        location ||
-        localStorage.getItem(
-            "terraGuardLocation"
-        ) ||
-        "Delhi";
+        localStorage.getItem("terraGuardLocation") || "Delhi";
 
+    const latitude = Number(localStorage.getItem("terraGuardLatitude")) || 28.6139;
+    const longitude = Number(localStorage.getItem("terraGuardLongitude")) || 77.2090;
+
+    try {
+        if (window.TerraGuardAPI && typeof window.TerraGuardAPI.checkAlerts === "function" && localStorage.getItem("terraGuardAccessToken")) {
+            const response = await window.TerraGuardAPI.checkAlerts(latitude, longitude, currentLocation);
+            if (response && Array.isArray(response.alerts)) {
+                console.log("TerraGuard Python Centralized Alerts:", response.alerts);
+                return response.alerts;
+            }
+        }
+    } catch (backendError) {
+        console.warn("Backend alert check failed, falling back to local evaluation:", backendError);
+    }
+
+    const preferences = getAlertPreferences();
     const alerts = [];
-    const preferences =
-        getAlertPreferences();
 
     let weather =
         monitoringData.weather ||

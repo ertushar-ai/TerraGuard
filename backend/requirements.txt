@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+httpx
+pydantic[email]
+python-dotenv
+SQLAlchemy>=2.0
+psycopg[binary]>=3.2
+PyJWT>=2.9
+pwdlib[argon2]>=0.2
+pywebpush>=2.0

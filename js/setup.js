@@ -525,6 +525,14 @@ async function saveSetupPreferences() {
         JSON.stringify(preferences)
     );
 
+    try {
+        if (window.TerraGuardAPI && typeof window.TerraGuardAPI.updatePreferences === "function" && localStorage.getItem("terraGuardAccessToken")) {
+            await window.TerraGuardAPI.updatePreferences(preferences);
+        }
+    } catch (backendError) {
+        console.warn("Unable to save preferences to Python backend:", backendError);
+    }
+
     return preferences;
 }
 

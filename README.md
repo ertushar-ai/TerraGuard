@@ -1,433 +1,151 @@
 # TerraGuard 🌍
 
-### Local Disaster Monitoring & Alert System
+### Python-First Local Disaster Monitoring & Alert System
 
-TerraGuard is a web-based disaster monitoring system designed to provide **local and real-time environmental risk information** in a simple dashboard.
-
-The system monitors **weather conditions, rainfall, landslide risk, and earthquake activity** for a selected location. Based on the collected data, TerraGuard evaluates risk levels and generates alerts for potentially dangerous conditions.
+> **⚠️ Academic Disclaimer**: TerraGuard is an academic mini-project for disaster monitoring and risk indication. It is **NOT** an official emergency warning system.
 
 ---
 
-## 🚨 Features
+## 📌 Overview
 
-* 📍 **Location-based monitoring**
+TerraGuard is a production-quality, web-based local disaster monitoring application. It evaluates real-time environmental data for a user's location, including **weather conditions, rainfall intensity, landslide hazards, and earthquake activity**.
 
-  * Search and select a monitoring location.
-  * Save the selected location for future visits.
-  * Uses geographic coordinates for accurate weather and rainfall data.
-
-* 🌦️ **Weather monitoring**
-
-  * Current temperature
-  * Weather condition
-  * Humidity
-  * Wind speed
-  * Rainfall probability
-  * Weather risk level
-
-* 🌧️ **Landslide risk monitoring**
-
-  * Analyzes rainfall data.
-  * Calculates rainfall intensity and duration.
-  * Generates a landslide risk score.
-  * Displays risk as Safe, Moderate, High, or Critical.
-
-* 🌎 **Earthquake monitoring**
-
-  * Retrieves recent earthquake activity.
-  * Displays earthquake magnitude and location.
-  * Calculates earthquake risk based on magnitude and relevance to the selected location.
-
-* 🚨 **Automatic disaster alerts**
-
-  * Generates alerts when dangerous conditions are detected.
-  * Supports Weather, Landslide, and Earthquake alerts.
-  * Alerts can be filtered according to minimum severity.
-
-* 🔔 **Notification preferences**
-
-  * Enable or disable alerts for individual disaster types.
-  * Configure browser notification preferences.
-
-* 🔄 **Automatic data refresh**
-
-  * Dashboard data is refreshed every **10 minutes**.
-  * Prevents unnecessary duplicate API requests.
-  * Alerts reuse the data already collected by the dashboard.
-
-* 🗺️ **Map integration**
-
-  * Location and geographic information can be displayed using OpenStreetMap-based services.
-
-* 🔐 **User setup and authentication**
-
-  * Signup and login pages.
-  * Initial location and notification preference setup.
+The application is built with a **Python-First architecture**: all core business logic, risk calculations, data normalization, alert generation, deduplication, user management, location processing, and Web Push notifications are executed in the **FastAPI Python backend**. The frontend consists of vanilla HTML, CSS, and JavaScript.
 
 ---
 
-## 🖥️ Dashboard
-
-The main dashboard provides an overview of the selected location:
+## 🏗️ Architecture
 
 ```text
-┌───────────────────────────────────────────┐
-│              TerraGuard                   │
-│  Dashboard | Weather | Landslide | ...    │
-├───────────────────────────────────────────┤
-│                                           │
-│  📍 Monitoring Location                   │
-│                                           │
-├─────────────┬─────────────┬───────────────┤
-│ 🌦 Weather  │ 🌧 Landslide│ 🌎 Earthquake │
-│             │             │               │
-│ Condition   │ Risk        │ Magnitude     │
-│ Temperature │ Score       │ Location      │
-│ Risk        │ Status      │ Risk          │
-├─────────────┴─────────────┴───────────────┤
-│                                           │
-│              Current Weather              │
-│                                           │
-├───────────────────────────────────────────┤
-│              Recent Alerts                │
-│                                           │
-└───────────────────────────────────────────┘
+               ┌─────────────────────────────────────────┐
+               │         Frontend (Browser UI)           │
+               │ Vanilla HTML5, CSS3, JS, Leaflet Map    │
+               └────────────────────┬────────────────────┘
+                                    │
+                               REST │ API (JSON)
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                        FastAPI Python Backend                          │
+│                                                                        │
+│  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────────┐  │
+│  │ Auth & JWT       │  │ Location Service │  │ Weather Service      │  │
+│  │ pwdlib / Argon2  │  │ Nominatim / GPS  │  │ Open-Meteo           │  │
+│  └──────────────────┘  └──────────────────┘  └──────────────────────┘  │
+│  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────────┐  │
+│  │ Earthquake Engine│  │ Landslide Engine │  │ Centralized Alert    │  │
+│  │ USGS Query       │  │ Rainfall Accum.  │  │ & Deduplication      │  │
+│  └──────────────────┘  └──────────────────┘  └──────────────────────┘  │
+│  ┌──────────────────┐  ┌──────────────────┐                            │
+│  │ Web Push VAPID   │  │ SQLAlchemy ORM   │                            │
+│  │ PyWebPush        │  │ SQLite/Postgres  │                            │
+│  └──────────────────┘  └──────────────────┘                            │
+└────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## ⚙️ How It Works
+## ⚙️ Backend Endpoints
 
-```text
-User selects a location
-          ↓
-Location is converted into coordinates
-          ↓
-TerraGuard requests environmental data
-          ↓
-┌─────────────┬──────────────┬──────────────┐
-│   Weather   │   Rainfall   │  Earthquake  │
-│    Data     │    Data      │     Data     │
-└─────────────┴──────────────┴──────────────┘
-          ↓
-Risk calculation
-          ↓
-┌─────────────┬──────────────┬──────────────┐
-│   Weather   │   Landslide  │  Earthquake  │
-│     Risk    │     Risk     │     Risk     │
-└─────────────┴──────────────┴──────────────┘
-          ↓
-Alert generation
-          ↓
-Dashboard displays current conditions
-          ↓
-Automatic refresh after 10 minutes
-```
+### 🔐 Authentication & Profile
+- `POST /api/auth/signup` – Register user with Argon2 password hashing
+- `POST /api/auth/login` – Authenticate user and issue JWT token
+- `GET /api/auth/me` – Retrieve current authenticated user profile
 
----
+### 📍 Location Service
+- `GET /api/locations/search?q={query}` – Search locations via Nominatim
+- `GET /api/locations/reverse?latitude={lat}&longitude={lon}` – Reverse geocode GPS coordinates to locality name
+- `GET /api/locations` – Get saved user locations
+- `POST /api/locations` – Save a user location
 
-## 🧠 Risk Assessment
+### 🌦️ Environmental & Disaster Engines
+- `GET /api/weather?latitude={lat}&longitude={lon}&location={name}` – Normalized weather & weather risk
+- `GET /api/earthquakes?latitude={lat}&longitude={lon}&location={name}` – Distance-filtered USGS earthquakes & risk
+- `GET /api/landslide?latitude={lat}&longitude={lon}&location={name}` – Multi-hour rainfall accumulation & landslide risk
+- `GET /api/alerts?latitude={lat}&longitude={lon}&location={name}` – Aggregated disaster alert evaluation
 
-TerraGuard uses rule-based risk assessment rather than requiring a machine-learning model.
-
-### Weather
-
-Weather alerts are generated when conditions cross predefined thresholds such as:
-
-* High rainfall probability
-* Heavy precipitation
-* Strong wind
-
-### Landslide
-
-Landslide risk is calculated using rainfall-related factors such as:
-
-* Rainfall intensity
-* Rainfall duration
-* Heavy rainfall events
-* Prolonged rainfall
-
-The calculated score is converted into a risk level:
-
-| Risk Level | Description                                     |
-| ---------- | ----------------------------------------------- |
-| Safe       | No significant risk detected                    |
-| Moderate   | Conditions require attention                    |
-| High       | Potentially dangerous conditions                |
-| Critical   | Severe conditions requiring immediate attention |
-
-### Earthquake
-
-Earthquake risk considers factors including:
-
-* Earthquake magnitude
-* Distance/relevance to the monitored location
-* Recent earthquake activity
+### 🚨 Alert History & Notifications
+- `POST /api/alerts/check` – Python alert engine check, deduplication, and push trigger
+- `GET /api/alerts/history` – Persistent alert history for authenticated user
+- `GET /api/preferences` – Retrieve alert & notification preferences
+- `PUT /api/preferences` – Update minimum severity and notification toggles
+- `GET /api/notifications/vapid-public-key` – Obtain VAPID public key
+- `POST /api/notifications/subscribe` – Register browser Web Push subscription
+- `DELETE /api/notifications/subscribe` – Unsubscribe Web Push endpoint
 
 ---
 
-## 🔌 APIs & External Services
+## 📦 Setup & Installation
 
-TerraGuard uses publicly available services and APIs for collecting environmental and geographic data.
+### Prerequisites
+- **Python 3.10+**
+- **Node.js / Live Server** (optional for local HTTP server)
 
-| Service                 | Purpose                        |
-| ----------------------- | ------------------------------ |
-| **Open-Meteo**          | Weather and precipitation data |
-| **USGS Earthquake API** | Recent earthquake information  |
-| **Nominatim**           | Location search and geocoding  |
-| **OpenStreetMap**       | Geographic/map data            |
-
-Additional government datasets and disaster-related APIs can be integrated in future versions.
-
----
-
-## 🛠️ Technologies Used
-
-### Frontend
-
-* HTML5
-* CSS3
-* JavaScript
-* Tailwind CSS
-* Font Awesome
-
-### APIs & Data
-
-* Open-Meteo API
-* USGS Earthquake API
-* Nominatim Geocoding API
-* OpenStreetMap
-
-### Storage
-
-* Browser LocalStorage
-
-### Development Tools
-
-* Visual Studio Code
-* Git
-* GitHub
-* Browser Developer Tools
-
----
-
-## 📁 Project Structure
-
-```text
-TerraGuard/
-│
-├── index.html
-│
-├── css/
-│   ├── style.css
-│   ├── components.css
-│   └── auth.css
-│
-├── js/
-│   ├── utils.js
-│   ├── main.js
-│   ├── weather.js
-│   ├── landslide.js
-│   ├── earthquake.js
-│   ├── alerts.js
-│   └── map.js
-│
-├── pages/
-│   ├── weather.html
-│   ├── landslide.html
-│   ├── earthquake.html
-│   ├── map.html
-│   ├── login.html
-│   ├── signup.html
-│   └── setup.html
-│
-└── README.md
-```
-
----
-
-## 🔄 Data Refresh System
-
-The dashboard automatically refreshes monitoring data every **10 minutes**.
-
-Instead of allowing every module to independently request the same data, the dashboard collects the required data once and passes it to the alert system.
-
-```text
-Dashboard
-    │
-    ├── Weather API ────────┐
-    │                       │
-    ├── Rainfall API ───────┤
-    │                       ↓
-    └── Earthquake API ──→ Dashboard Data
-                              │
-                              ↓
-                         Alert System
-```
-
-This reduces unnecessary API requests and prevents duplicate data fetching.
-
----
-
-## 🔔 Alert System
-
-TerraGuard currently supports three major alert categories:
-
-### 🌦 Weather Alerts
-
-Examples:
-
-* Heavy Rainfall Warning
-* Heavy Rainfall Detected
-* Strong Wind Warning
-
-### 🌧 Landslide Alerts
-
-Examples:
-
-* Moderate Landslide Risk
-* High Landslide Risk
-* Critical Landslide Risk
-* Heavy Rainfall / Prolonged Rainfall warnings
-
-### 🌎 Earthquake Alerts
-
-Examples:
-
-* Significant Earthquake Detected
-* Moderate Earthquake Risk
-* High Earthquake Risk
-* Critical Earthquake Risk
-
-Alerts can be filtered according to the user's selected minimum severity.
-
----
-
-## 💾 Local Storage
-
-TerraGuard uses browser LocalStorage to maintain information between sessions.
-
-Stored information can include:
-
-* Selected monitoring location
-* Latitude and longitude
-* Location information
-* Notification preferences
-* Setup completion status
-* Alert notification history
-
-No external database is currently required for the frontend prototype.
-
----
-
-## 🚀 Running the Project
-
-### 1. Clone the repository
-
+### 1. Backend Setup
 ```bash
-git clone <repository-url>
+cd backend
+
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
+# Windows:
+venv\Scripts\activate
+# Linux/macOS:
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Start FastAPI Uvicorn Server
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
+FastAPI Interactive Swagger Documentation will be available at: `http://127.0.0.1:8000/docs`
 
-### 2. Open the project
-
+### 2. Frontend Setup
+Run a simple HTTP server from the project root:
 ```bash
-cd TerraGuard
+# From project root directory
+python -m http.server 8080 --directory .
 ```
-
-### 3. Run using a local web server
-
-For example, using VS Code with **Live Server**:
-
-```text
-Open index.html
-        ↓
-Right Click
-        ↓
-Open with Live Server
-```
-
-A local server is recommended instead of opening the HTML files directly with `file://`.
+Access the application at `http://127.0.0.1:8080` or open `index.html`.
 
 ---
 
-## 🌐 Browser Requirements
+## 🔑 Environment Variables (`.env`)
 
-TerraGuard works best on modern browsers such as:
+Located in `backend/.env`:
+```env
+APP_NAME=TerraGuard
+APP_ENV=development
+SECRET_KEY=terraguard_secret_jwt_key_change_in_production
+ACCESS_TOKEN_EXPIRE_MINUTES=10080
+DATABASE_URL=sqlite:///./terraguard.db
+CORS_ORIGINS=*
+HTTP_TIMEOUT=15.0
 
-* Google Chrome
-* Microsoft Edge
-* Brave
-* Firefox
-
-JavaScript and browser notifications should be enabled for the full experience.
-
----
-
-## 🔮 Future Improvements
-
-The current version is a functional prototype. Possible future improvements include:
-
-* 🤖 Machine-learning based disaster prediction
-* 📱 Progressive Web App (PWA) support
-* 📲 SMS and WhatsApp notifications
-* 📧 Email alerts
-* 🛰️ Integration with additional government disaster datasets
-* 🗺️ Real-time disaster visualization on maps
-* 📊 Historical weather and disaster analytics
-* 👥 Multi-user backend authentication
-* 🗄️ Database integration
-* 📈 Risk prediction using historical data
-* 🚨 More advanced local disaster warning mechanisms
-* ☁️ Cloud deployment
-* 📍 More accurate location-specific risk calculations
-
----
-
-## 🎯 Project Objective
-
-The main objective of TerraGuard is to make disaster-related information **local, understandable, and actionable**.
-
-Instead of simply displaying raw environmental data, TerraGuard processes the data and converts it into understandable risk levels and alerts so that users can quickly understand whether their selected area may be experiencing potentially dangerous conditions.
-
----
-
-## 👨‍💻 Project Type
-
-**Academic Mini Project**
-
-**Domain:**
-Web Development • Disaster Management • Environmental Monitoring
-
-**Development Approach:**
-Frontend-based monitoring system with API integration and rule-based risk assessment.
-
----
-
-## 📌 Current Status
-
-```text
-✅ Weather monitoring
-✅ Rainfall monitoring
-✅ Landslide risk calculation
-✅ Earthquake monitoring
-✅ Disaster alert generation
-✅ Location search
-✅ Notification preferences
-✅ User setup
-✅ Authentication interface
-✅ Automatic 10-minute refresh
-✅ Duplicate API request prevention
-🔄 Map functionality
-🔄 Advanced notifications
-🔄 Backend integration
-🔄 Machine-learning prediction
+# Web Push VAPID keys
+VAPID_PUBLIC_KEY=...
+VAPID_PRIVATE_KEY=...
+VAPID_SUBJECT=mailto:admin@terraguard.local
 ```
 
 ---
 
-## 📜 License
+## 📱 Mobile & GPS Geolocation
+TerraGuard requests browser geolocation permission upon initial load:
+- Uses `enableHighAccuracy: true` for phone GPS.
+- Saves raw `latitude` and `longitude` coordinates as the authoritative source of truth.
+- Performs reverse geocoding to display meaningful locality names without losing coordinate precision.
+- Supports manual location search and location selection fallback when GPS is unavailable.
 
-This project is developed for educational and academic purposes.
+---
 
-You are free to modify and extend the project for learning and experimentation.
+## 🎨 Visual Identity & Nature Scene
+- Features a **programmatically rendered, cinematic anime-inspired nature background** created using HTML + SVG + CSS keyframe animations.
+- Depicts a rainy mountain valley framing rich tree foliage, mist/fog, continuous falling rain, drifting leaves, and a winding river.
+- **Zero external JPG/PNG background images** are used; the scene is lightweight, vector-based, and fully responsive across devices.
 
+---
+
+## 🛡️ License & Academic Note
+TerraGuard is developed as an academic project demonstrating Python-first full-stack disaster monitoring.

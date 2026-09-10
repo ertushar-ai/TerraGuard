@@ -143,6 +143,38 @@ async function loadEarthquakeMarkers(
     longitude
 ) {
     try {
+        let earthquakesList = [];
+
+        if (window.TerraGuardAPI && typeof window.TerraGuardAPI.earthquakes === "function") {
+            try {
+                const backendData = await window.TerraGuardAPI.earthquakes(latitude, longitude, "MapLocation");
+                if (backendData && Array.isArray(backendData.earthquakes)) {
+                    earthquakesList = backendData.earthquakes;
+                    earthquakesList.forEach(eq => {
+                        const marker = L.circleMarker([eq.latitude, eq.longitude], {
+                            radius: getEarthquakeMarkerSize(eq.magnitude),
+                            fillOpacity: 0.75,
+                            weight: 2,
+                            color: "#ffffff",
+                            fillColor: getEarthquakeMarkerColor(eq.risk ? eq.risk.level : "Low")
+                        }).addTo(map);
+
+                        marker.bindPopup(`
+                            <div class="map-popup">
+                                <strong>⚠️ M ${eq.magnitude.toFixed(1)} Earthquake</strong><br>
+                                <span>${escapeHTML(eq.place)}</span><br>
+                                <small>Depth: ${eq.depth} km | Distance: ${eq.distance.toFixed(1)} km</small><br>
+                                <small>Time: ${new Date(eq.time).toLocaleString()}</small>
+                            </div>
+                        `);
+                    });
+                    return;
+                }
+            } catch (backendError) {
+                console.warn("Backend earthquake route for map failed, using USGS fallback:", backendError);
+            }
+        }
+
         const endTime = new Date();
 
         const startTime = new Date(

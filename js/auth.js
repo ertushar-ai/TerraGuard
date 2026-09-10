@@ -1,9 +1,10 @@
 const terraGuardAuthConfig = {
-    demoMode: true,
+    demoMode: !window.TERRAGUARD_API_BASE,
     storageKeys: {
         user: "terraGuardUser",
         loggedIn: "terraGuardLoggedIn",
-        rememberMe: "terraGuardRememberMe"
+        rememberMe: "terraGuardRememberMe",
+        accessToken: "terraGuardAccessToken"
     }
 };
 
@@ -37,6 +38,10 @@ function setLoggedIn(status) {
 }
 
 function isLoggedIn() {
+    if (localStorage.getItem(terraGuardAuthConfig.storageKeys.accessToken)) {
+        return true;
+    }
+
     return localStorage.getItem(
         terraGuardAuthConfig.storageKeys.loggedIn
     ) === "true";
@@ -51,92 +56,182 @@ function getCurrentAuthPage() {
     return null;
 }
 
-function setupPasswordToggle(buttonId, inputId) {
-    const button = document.getElementById(buttonId);
-    const input = document.getElementById(inputId);
+function getLoginUrl() {
+    const path = window.location.pathname.toLowerCase();
 
-    if (!button || !input) return;
+    if (path.includes("/pages/")) {
+        return "login.html";
+    }
 
-    button.addEventListener("click", () => {
-        const isPassword = input.type === "password";
-
-        input.type = isPassword ? "text" : "password";
-        button.textContent = isPassword ? "🙈" : "👁️";
-        button.setAttribute(
-            "aria-label",
-            isPassword ? "Hide password" : "Show password"
-        );
-    });
+    return "pages/login.html";
 }
 
-function showMessage(elementId, message) {
+function getDashboardUrl() {
+    const path = window.location.pathname.toLowerCase();
+
+    if (path.includes("/pages/")) {
+        return "../index.html";
+    }
+
+    return "index.html";
+}
+
+function getSetupUrl() {
+    const path = window.location.pathname.toLowerCase();
+
+    if (path.includes("/pages/")) {
+        return "setup.html";
+    }
+
+    return "pages/setup.html";
+}
+
+function showAuthMessage(elementId, message, type = "error") {
     const element = document.getElementById(elementId);
 
     if (!element) return;
 
     element.textContent = message;
-    element.classList.remove("hidden");
+    element.className = `auth-message ${type}`;
+    element.style.display = message ? "block" : "none";
 }
 
-function hideMessage(elementId) {
-    const element = document.getElementById(elementId);
-
-    if (!element) return;
-
-    element.textContent = "";
-    element.classList.add("hidden");
+function hideAuthMessage(elementId) {
+    showAuthMessage(elementId, "", "error");
 }
 
-function setButtonLoading(buttonId, textId, loading) {
-    const button = document.getElementById(buttonId);
-    const text = document.getElementById(textId);
+function setSubmitLoading(form, loading, defaultText) {
+    const button = form?.querySelector(".auth-submit");
 
-    if (!button || !text) return;
+    if (!button) return;
 
     if (loading) {
         button.disabled = true;
-        button.classList.add("opacity-70", "cursor-not-allowed");
-        text.textContent = "Please wait...";
+
+        if (!button.dataset.originalText) {
+            button.dataset.originalText = button.textContent;
+        }
+
+        button.textContent = "Please wait...";
     } else {
         button.disabled = false;
-        button.classList.remove("opacity-70", "cursor-not-allowed");
-        text.textContent =
-            buttonId === "login-button"
-                ? "Sign in"
-                : "Create account";
+        button.textContent =
+            button.dataset.originalText || defaultText;
     }
+}
+
+async function apiRequest(path, options = {}) {
+    const base =
+        window.TERRAGUARD_API_BASE ||
+        "http://127.0.0.1:8000/api";
+
+    const headers = {
+        ...(options.headers || {})
+    };
+
+    if (options.body && !headers["Content-Type"]) {
+        headers["Content-Type"] = "application/json";
+    }
+
+    const token = localStorage.getItem(
+        terraGuardAuthConfig.storageKeys.accessToken
+    );
+
+    if (token) {
+        headers.Authorization = `Bearer ${token}`;
+    }
+
+    const response = await fetch(`${base}${path}`, {
+        ...options,
+        headers
+    });
+
+    const data = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+        throw new Error(
+            data.detail ||
+                `Request failed (${response.status})`
+        );
+    }
+
+    return data;
+}
+
+function persistAuthSession(data, rememberMe = false) {
+    if (data.access_token) {
+        localStorage.setItem(
+            terraGuardAuthConfig.storageKeys.accessToken,
+            data.access_token
+        );
+    }
+
+    if (data.user) {
+        saveAuthUser(data.user);
+    }
+
+    setLoggedIn(true);
+
+    localStorage.setItem(
+        terraGuardAuthConfig.storageKeys.rememberMe,
+        rememberMe ? "true" : "false"
+    );
+}
+
+async function loginWithApi(email, password) {
+    const data = await apiRequest("/auth/login", {
+        method: "POST",
+        body: JSON.stringify({ email, password })
+    });
+
+    persistAuthSession(data);
+    return data;
+}
+
+async function signupWithApi(name, email, password) {
+    const data = await apiRequest("/auth/signup", {
+        method: "POST",
+        body: JSON.stringify({ name, email, password })
+    });
+
+    persistAuthSession(data);
+    return data;
 }
 
 async function handleLogin(event) {
     event.preventDefault();
 
-    hideMessage("login-error");
+    const form = event.currentTarget;
+
+    hideAuthMessage("login-message");
 
     const email = document.getElementById("email")?.value.trim();
     const password = document.getElementById("password")?.value;
-    const rememberMe =
-        document.getElementById("remember-me")?.checked || false;
 
     if (!email || !password) {
-        showMessage(
-            "login-error",
-            "Please enter your email address and password."
+        showAuthMessage(
+            "login-message",
+            "Please enter your email address and password.",
+            "error"
         );
         return;
     }
 
     if (!isValidEmail(email)) {
-        showMessage(
-            "login-error",
-            "Please enter a valid email address."
+        showAuthMessage(
+            "login-message",
+            "Please enter a valid email address.",
+            "error"
         );
         return;
     }
 
-    setButtonLoading("login-button", "login-button-text", true);
+    setSubmitLoading(form, true, "Login");
 
     try {
-        if (terraGuardAuthConfig.demoMode) {
+        if (!terraGuardAuthConfig.demoMode) {
+            await loginWithApi(email, password);
+        } else {
             await delay(700);
 
             const demoUser = {
@@ -149,42 +244,33 @@ async function handleLogin(event) {
 
             saveAuthUser(demoUser);
             setLoggedIn(true);
-
-            localStorage.setItem(
-                terraGuardAuthConfig.storageKeys.rememberMe,
-                rememberMe ? "true" : "false"
-            );
-
-            const setupComplete =
-                localStorage.getItem("terraGuardSetupComplete") === "true";
-
-            window.location.href = setupComplete
-                ? "../index.html"
-                : "setup.html";
-
-            return;
         }
 
-        throw new Error(
-            "Backend authentication has not been connected yet."
-        );
+        const setupComplete =
+            localStorage.getItem("terraGuardSetupComplete") === "true";
+
+        window.location.href = setupComplete
+            ? getDashboardUrl()
+            : getSetupUrl();
     } catch (error) {
         console.error("TerraGuard Login Error:", error);
 
-        showMessage(
-            "login-error",
-            error.message || "Unable to sign in. Please try again."
+        showAuthMessage(
+            "login-message",
+            error.message || "Unable to sign in. Please try again.",
+            "error"
         );
 
-        setButtonLoading("login-button", "login-button-text", false);
+        setSubmitLoading(form, false, "Login");
     }
 }
 
 async function handleSignup(event) {
     event.preventDefault();
 
-    hideMessage("signup-error");
-    hideMessage("signup-success");
+    const form = event.currentTarget;
+
+    hideAuthMessage("signup-message");
 
     const name = document.getElementById("name")?.value.trim();
     const email = document.getElementById("email")?.value.trim();
@@ -193,56 +279,74 @@ async function handleSignup(event) {
         document.getElementById("confirm-password")?.value;
 
     if (!name) {
-        showMessage("signup-error", "Please enter your full name.");
+        showAuthMessage(
+            "signup-message",
+            "Please enter your full name.",
+            "error"
+        );
         return;
     }
 
     if (name.length < 2) {
-        showMessage("signup-error", "Please enter a valid name.");
+        showAuthMessage(
+            "signup-message",
+            "Please enter a valid name.",
+            "error"
+        );
         return;
     }
 
     if (!email) {
-        showMessage(
-            "signup-error",
-            "Please enter your email address."
+        showAuthMessage(
+            "signup-message",
+            "Please enter your email address.",
+            "error"
         );
         return;
     }
 
     if (!isValidEmail(email)) {
-        showMessage(
-            "signup-error",
-            "Please enter a valid email address."
+        showAuthMessage(
+            "signup-message",
+            "Please enter a valid email address.",
+            "error"
         );
         return;
     }
 
     if (!password) {
-        showMessage("signup-error", "Please create a password.");
+        showAuthMessage(
+            "signup-message",
+            "Please create a password.",
+            "error"
+        );
         return;
     }
 
     if (password.length < 8) {
-        showMessage(
-            "signup-error",
-            "Password must contain at least 8 characters."
+        showAuthMessage(
+            "signup-message",
+            "Password must contain at least 8 characters.",
+            "error"
         );
         return;
     }
 
     if (password !== confirmPassword) {
-        showMessage(
-            "signup-error",
-            "Passwords do not match."
+        showAuthMessage(
+            "signup-message",
+            "Passwords do not match.",
+            "error"
         );
         return;
     }
 
-    setButtonLoading("signup-button", "signup-button-text", true);
+    setSubmitLoading(form, true, "Create Account");
 
     try {
-        if (terraGuardAuthConfig.demoMode) {
+        if (!terraGuardAuthConfig.demoMode) {
+            await signupWithApi(name, email, password);
+        } else {
             await delay(700);
 
             const newUser = {
@@ -253,34 +357,30 @@ async function handleSignup(event) {
 
             saveAuthUser(newUser);
             setLoggedIn(true);
-
-            localStorage.removeItem("terraGuardSetupComplete");
-
-            showMessage(
-                "signup-success",
-                "Account created successfully! Setting up your TerraGuard profile..."
-            );
-
-            await delay(900);
-
-            window.location.href = "setup.html";
-
-            return;
         }
 
-        throw new Error(
-            "Backend registration has not been connected yet."
+        localStorage.removeItem("terraGuardSetupComplete");
+
+        showAuthMessage(
+            "signup-message",
+            "Account created successfully! Setting up your TerraGuard profile...",
+            "success"
         );
+
+        await delay(900);
+
+        window.location.href = getSetupUrl();
     } catch (error) {
         console.error("TerraGuard Signup Error:", error);
 
-        showMessage(
-            "signup-error",
+        showAuthMessage(
+            "signup-message",
             error.message ||
-                "Unable to create your account. Please try again."
+                "Unable to create your account. Please try again.",
+            "error"
         );
 
-        setButtonLoading("signup-button", "signup-button-text", false);
+        setSubmitLoading(form, false, "Create Account");
     }
 }
 
@@ -307,24 +407,20 @@ function logout() {
         terraGuardAuthConfig.storageKeys.rememberMe
     );
 
-    window.location.href = "pages/login.html";
+    localStorage.removeItem(
+        terraGuardAuthConfig.storageKeys.accessToken
+    );
+
+    window.location.href = getLoginUrl();
 }
 
 function requireLogin() {
     if (!isLoggedIn()) {
-        window.location.href = "pages/login.html";
+        window.location.href = getLoginUrl();
         return false;
     }
 
     return true;
-}
-
-function handleForgotPassword(event) {
-    event.preventDefault();
-
-    alert(
-        "Password reset will be available once the TerraGuard backend is connected."
-    );
 }
 
 function initializeLoginPage() {
@@ -333,18 +429,6 @@ function initializeLoginPage() {
     if (!form) return;
 
     form.addEventListener("submit", handleLogin);
-
-    setupPasswordToggle("toggle-password", "password");
-
-    const forgotPassword =
-        document.getElementById("forgot-password");
-
-    if (forgotPassword) {
-        forgotPassword.addEventListener(
-            "click",
-            handleForgotPassword
-        );
-    }
 }
 
 function initializeSignupPage() {
@@ -353,12 +437,17 @@ function initializeSignupPage() {
     if (!form) return;
 
     form.addEventListener("submit", handleSignup);
+}
 
-    setupPasswordToggle("toggle-password", "password");
-    setupPasswordToggle(
-        "toggle-confirm-password",
-        "confirm-password"
-    );
+function initializeLogoutButtons() {
+    document
+        .querySelectorAll("[data-action='logout'], #logout-button")
+        .forEach(button => {
+            button.addEventListener("click", event => {
+                event.preventDefault();
+                logout();
+            });
+        });
 }
 
 function initializeAuth() {
@@ -371,6 +460,8 @@ function initializeAuth() {
     if (currentPage === "signup") {
         initializeSignupPage();
     }
+
+    initializeLogoutButtons();
 }
 
 window.TerraGuardAuth = {

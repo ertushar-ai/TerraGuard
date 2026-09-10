@@ -7,6 +7,9 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
+        window.TERRAGUARD_API_BASE = "http://127.0.0.1:8000/api";
+    </script>
+    <script>
         tailwind.config = {
             theme: {
                 extend: {
@@ -64,6 +67,46 @@
                         <span>📍</span>
                         <span id="navbar-location" class="text-sm">Loading...</span>
                     </div>
+
+                    <div class="flex items-center gap-3" id="navbar-auth">
+                        <a
+                            href="pages/login.html"
+                            class="hover:text-secondary transition text-sm font-semibold"
+                            id="navbar-login"
+                        >
+                            Login
+                        </a>
+
+                        <a
+                            href="pages/signup.html"
+                            class="hover:text-secondary transition text-sm font-semibold"
+                            id="navbar-signup"
+                        >
+                            Sign Up
+                        </a>
+
+                        <div
+                            id="navbar-user"
+                            class="flex items-center gap-3"
+                            style="display: none;"
+                        >
+                            <a
+                                href="pages/setup.html"
+                                class="hover:text-secondary transition text-sm font-semibold"
+                            >
+                                Profile
+                            </a>
+
+                            <button
+                                type="button"
+                                class="hover:text-secondary transition text-sm font-semibold"
+                                id="logout-button"
+                                data-action="logout"
+                            >
+                                Logout
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <button
@@ -91,6 +134,14 @@
                     >
                         🔔 Notifications
                     </button>
+
+                    <a href="pages/login.html" id="mobile-navbar-login">Login</a>
+                    <a href="pages/signup.html" id="mobile-navbar-signup">Sign Up</a>
+
+                    <div id="mobile-navbar-user" style="display: none;" class="flex flex-col gap-3">
+                        <a href="pages/setup.html">Profile</a>
+                        <button type="button" data-action="logout">Logout</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -577,11 +628,14 @@
     </footer>
 
     <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
     <script src="js/main.js"></script>
     <script src="js/weather.js"></script>
     <script src="js/landslide.js"></script>
     <script src="js/earthquake.js"></script>
     <script src="js/alerts.js"></script>
+    <script src="js/location.js"></script>
 
     <script>
         async function loadDashboardData() {

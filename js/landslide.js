@@ -563,6 +563,39 @@ function updateLandslideRiskBadge(risk) {
         });
 }
 
+async function loadLandslideData(location) {
+    try {
+        const coordinates = getLandslideCoordinates(location);
+
+        if (!coordinates) {
+            throw new Error(`Coordinates not found for location: ${location}`);
+        }
+
+        let data = null;
+
+        try {
+            if (window.TerraGuardAPI && typeof window.TerraGuardAPI.landslide === "function") {
+                data = await window.TerraGuardAPI.landslide(coordinates.latitude, coordinates.longitude, location);
+            }
+        } catch (backendError) {
+            console.warn("FastAPI landslide endpoint failed, using client fallback:", backendError);
+        }
+
+        if (!data || !data.risk) {
+            const rainfallPayload = await fetchRainfallData(coordinates.latitude, coordinates.longitude);
+            data = processLandslideData(rainfallPayload, location, coordinates);
+        }
+
+        window.TerraGuardLandslideData = data;
+        updateLandslideUI(data);
+        return data;
+    } catch (error) {
+        console.error("Landslide calculation error:", error);
+        window.TerraGuard?.showNotification?.("Unable to load landslide risk data.", "error");
+        return null;
+    }
+}
+
 async function fetchLandslideData(location) {
     const coordinates = getLandslideCoordinates(location);
 
@@ -575,6 +608,10 @@ async function fetchLandslideData(location) {
         coordinates.longitude
     );
 
+    return processLandslideData(weatherData, location, coordinates);
+}
+
+function processLandslideData(weatherData, location, coordinates) {
     const rainfall = weatherData.hourly.precipitation;
     const timeValues = weatherData.hourly.time;
 

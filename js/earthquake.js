@@ -129,6 +129,17 @@ async function fetchEarthquakeData(location) {
     const coordinates =
         getEarthquakeCoordinates(location);
 
+    try {
+        if (window.TerraGuardAPI && typeof window.TerraGuardAPI.earthquakes === "function") {
+            const backendData = await window.TerraGuardAPI.earthquakes(coordinates.latitude, coordinates.longitude, location);
+            if (backendData && Array.isArray(backendData.earthquakes)) {
+                return backendData;
+            }
+        }
+    } catch (backendError) {
+        console.warn("FastAPI earthquake endpoint failed, using direct USGS fallback:", backendError);
+    }
+
     const endTime = new Date();
 
     const startTime = new Date(

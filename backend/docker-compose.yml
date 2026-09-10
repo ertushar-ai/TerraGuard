@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: terraguard-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: terraguard
+      POSTGRES_USER: terraguard
+      POSTGRES_PASSWORD: terraguard
+    ports:
+      - "5432:5432"
+    volumes:
+      - terraguard_pgdata:/var/lib/postgresql/data
+
+volumes:
+  terraguard_pgdata:
