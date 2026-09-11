@@ -5,13 +5,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-
 def _get_int(name: str, default: int) -> int:
     try:
         return int(os.getenv(name, str(default)))
     except (TypeError, ValueError):
         return default
-
 
 def _get_float(name: str, default: float) -> float:
     try:
@@ -19,11 +17,9 @@ def _get_float(name: str, default: float) -> float:
     except (TypeError, ValueError):
         return default
 
-
 def _get_list(name: str, default: str) -> list[str]:
     value = os.getenv(name, default)
     return [item.strip() for item in value.split(",") if item.strip()]
-
 
 @dataclass(frozen=True)
 class Settings:
@@ -37,7 +33,6 @@ class Settings:
     vapid_private_key: str
     vapid_subject: str
     cors_origins: list[str]
-
 
 settings = Settings(
     app_name=os.getenv("APP_NAME", "TerraGuard API"),
@@ -74,15 +69,11 @@ settings = Settings(
         "CORS_ORIGINS",
         "http://127.0.0.1:5500,"
         "http://localhost:5500,"
+        "http://127.0.0.1:8080,"
+        "http://localhost:8080,"
         "http://localhost:3000",
     ),
 )
-
-
-# ---------------------------------------------------------
-# Backward-compatible exports
-# Existing backend modules import these directly.
-# ---------------------------------------------------------
 
 APP_NAME = settings.app_name
 APP_ENV = settings.app_env

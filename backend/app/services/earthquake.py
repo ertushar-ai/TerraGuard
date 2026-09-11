@@ -5,14 +5,12 @@ from app.core.config import settings
 
 USGS_URL = "https://earthquake.usgs.gov/fdsnws/event/1/query"
 
-
 def distance_km(lat1, lon1, lat2, lon2):
     earth_radius = 6371.0
     dlat = radians(lat2 - lat1)
     dlon = radians(lon2 - lon1)
     a = sin(dlat / 2) ** 2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon / 2) ** 2
     return 2 * earth_radius * asin(sqrt(a))
-
 
 def earthquake_risk(magnitude, distance, depth):
     score = 0
@@ -51,7 +49,6 @@ def earthquake_risk(magnitude, distance, depth):
         level = "Safe"
 
     return {"level": level, "score": score, "reasons": reasons}
-
 
 async def get_earthquakes(latitude, longitude, location):
     end = datetime.now(timezone.utc)

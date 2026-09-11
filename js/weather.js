@@ -117,15 +117,15 @@ async function fetchWeatherData(location) {
                     latitude: data.latitude,
                     longitude: data.longitude,
                     temperature: data.temperature,
-                    apparent_temperature: data.feels_like !== undefined ? data.feels_like : data.feelsLike,
-                    relative_humidity_2m: data.humidity,
-                    wind_speed_10m: data.wind,
-                    rainfall_probability: data.rainfall_probability !== undefined ? data.rainfall_probability : data.rainfallProbability,
+                    feelsLike: data.feelsLike ?? data.feels_like,
+                    humidity: data.humidity ?? data.relative_humidity_2m,
+                    wind: data.wind ?? data.wind_speed_10m,
+                    rainfallProbability: data.rainfallProbability ?? data.rainfall_probability,
                     precipitation: data.precipitation,
                     rain: data.rain,
-                    weather_code: data.weather_code !== undefined ? data.weather_code : data.weatherCode,
+                    weatherCode: data.weatherCode ?? data.weather_code,
                     condition: data.condition,
-                    time: data.last_updated || data.lastUpdated,
+                    lastUpdated: data.lastUpdated ?? data.last_updated,
                     risk: data.risk || { level: "Low", score: 0, reasons: [] }
                 };
             }

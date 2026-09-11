@@ -584,6 +584,8 @@ async function loadLandslideData(location) {
         if (!data || !data.risk) {
             const rainfallPayload = await fetchRainfallData(coordinates.latitude, coordinates.longitude);
             data = processLandslideData(rainfallPayload, location, coordinates);
+        } else {
+            data = normalizeLandslideData(data, location, coordinates);
         }
 
         window.TerraGuardLandslideData = data;
@@ -594,6 +596,37 @@ async function loadLandslideData(location) {
         window.TerraGuard?.showNotification?.("Unable to load landslide risk data.", "error");
         return null;
     }
+}
+
+function normalizeLandslideData(data, location, coordinates) {
+    const nestedRisk = data.risk && typeof data.risk === "object"
+        ? data.risk
+        : {};
+
+    const value = (camelCase, snakeCase, fallback = 0) =>
+        data[camelCase] ?? data[snakeCase] ?? fallback;
+
+    return {
+        ...data,
+        location: data.location || location,
+        latitude: data.latitude ?? coordinates.latitude,
+        longitude: data.longitude ?? coordinates.longitude,
+        rainfall1h: value("rainfall1h", "rainfall_1h"),
+        rainfall3h: value("rainfall3h", "rainfall_3h"),
+        rainfall6h: value("rainfall6h", "rainfall_6h"),
+        rainfall12h: value("rainfall12h", "rainfall_12h"),
+        rainfall24h: value("rainfall24h", "rainfall_24h"),
+        rainfall72h: value("rainfall72h", "rainfall_72h"),
+        rainfall7d: value("rainfall7d", "rainfall_7d"),
+        rainfallDurationHours: value("rainfallDurationHours", "rainfall_duration_hours"),
+        rainfallIntensity: value("rainfallIntensity", "rainfall_intensity"),
+        peakRainfall: value("peakRainfall", "peak_rainfall"),
+        risk: nestedRisk.risk ?? data.risk ?? "Low",
+        score: nestedRisk.score ?? data.score ?? 0,
+        maximumScore: nestedRisk.maximumScore ?? data.maximumScore ?? 33,
+        percentage: nestedRisk.percentage ?? data.percentage ?? 0,
+        triggered: nestedRisk.triggered ?? data.triggered ?? []
+    };
 }
 
 async function fetchLandslideData(location) {
@@ -720,7 +753,10 @@ window.TerraGuardLandslide = {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-    if (document.querySelector("[data-landslide-refresh]")) {
+    if (
+        !document.body.dataset.dashboard &&
+        document.querySelector("[data-landslide-refresh]")
+    ) {
         const refreshButton =
             document.querySelector("[data-landslide-refresh]");
 

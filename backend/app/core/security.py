@@ -32,12 +32,10 @@ except ImportError:
             expected = hash_password(password)
             return hmac.compare_digest(expected, hashed)
 
-
 def create_access_token(user_id: int) -> str:
     expires = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     payload = {"sub": str(user_id), "exp": expires, "iat": datetime.now(timezone.utc)}
     return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
-
 
 def decode_access_token(token: str) -> int:
     payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])

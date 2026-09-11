@@ -8,7 +8,6 @@ from app.core.security import decode_access_token
 
 bearer = HTTPBearer(auto_error=False)
 
-
 def get_current_user(
     credentials: HTTPAuthorizationCredentials = Depends(bearer),
     db: Session = Depends(get_db),

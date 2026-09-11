@@ -19,20 +19,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 @app.on_event("startup")
 def startup():
     init_db()
-
 
 @app.get("/")
 def root():
     return {"name": APP_NAME, "status": "running", "docs": "/docs"}
 
-
 @app.get("/health")
 def health():
     return {"status": "ok"}
-
 
 app.include_router(router, prefix="/api")

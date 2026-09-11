@@ -133,7 +133,7 @@ async function fetchEarthquakeData(location) {
         if (window.TerraGuardAPI && typeof window.TerraGuardAPI.earthquakes === "function") {
             const backendData = await window.TerraGuardAPI.earthquakes(coordinates.latitude, coordinates.longitude, location);
             if (backendData && Array.isArray(backendData.earthquakes)) {
-                return backendData;
+                return normalizeEarthquakeData(backendData, location, coordinates);
             }
         }
     } catch (backendError) {
@@ -335,6 +335,26 @@ async function fetchEarthquakeData(location) {
             "USGS Earthquake Hazards Program",
         lastUpdated:
             new Date()
+    };
+}
+
+function normalizeEarthquakeData(data, location, coordinates) {
+    const risk = data.risk && typeof data.risk === "object"
+        ? data.risk.level
+        : data.risk;
+
+    return {
+        ...data,
+        location: data.location || location,
+        latitude: data.latitude ?? coordinates.latitude,
+        longitude: data.longitude ?? coordinates.longitude,
+        risk: risk || "Safe",
+        nearbyEarthquakeCount: data.nearbyEarthquakeCount ?? data.nearby_earthquake_count ?? data.earthquakes.length,
+        dataSource: data.dataSource ?? data.data_source ?? "USGS Earthquake Hazards Program",
+        lastUpdated: data.lastUpdated ?? data.last_updated ?? new Date().toISOString(),
+        time: data.time || new Date().toISOString(),
+        strongestEarthquake: data.strongestEarthquake ?? data.strongest_earthquake ?? null,
+        nearestEarthquake: data.nearestEarthquake ?? data.nearest_earthquake ?? null
     };
 }
 
@@ -591,6 +611,7 @@ window.TerraGuardEarthquake = {
 
 document.addEventListener("DOMContentLoaded", () => {
     if (
+        !document.body.dataset.dashboard &&
         document.querySelector(
             "[data-earthquake-refresh]"
         )

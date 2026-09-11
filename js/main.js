@@ -480,11 +480,17 @@ window.TerraGuard = {
     getSavedCoordinates,
     getSavedLocationData
 };
-// TerraGuard Service Worker Registration
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
+        const mainScript = Array.from(document.scripts).find(script =>
+            script.src.endsWith("/js/main.js")
+        );
+        const serviceWorkerUrl = mainScript
+            ? new URL("sw.js", mainScript.src)
+            : new URL("js/sw.js", document.baseURI);
+
         navigator.serviceWorker
-            .register("/sw.js")
+            .register(serviceWorkerUrl)
             .then(registration => {
                 console.log(
                     "TerraGuard Service Worker registered:",

@@ -7,7 +7,7 @@ window.TerraGuardNotifications = {
     const permission = await Notification.requestPermission();
     if (permission !== "granted") throw new Error("Notification permission was not granted.");
 
-    const registration = await navigator.serviceWorker.register("/sw.js", { scope: "/" });
+    const registration = await navigator.serviceWorker.register("/js/sw.js");
     const keyData = await window.TerraGuardAPI.vapidPublicKey();
     if (!keyData.publicKey) throw new Error("Web Push is not configured on the backend yet.");
 
@@ -22,7 +22,7 @@ window.TerraGuardNotifications = {
   },
 
   async disable() {
-    const registration = await navigator.serviceWorker.getRegistration("/");
+    const registration = await navigator.serviceWorker.getRegistration("/js/");
     if (!registration) return;
     const subscription = await registration.pushManager.getSubscription();
     if (!subscription) return;

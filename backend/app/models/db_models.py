@@ -5,10 +5,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.session import Base
 
-
 def utcnow():
     return datetime.now(timezone.utc)
-
 
 class User(Base):
     __tablename__ = "users"
@@ -24,7 +22,6 @@ class User(Base):
     subscriptions = relationship("PushSubscription", back_populates="user", cascade="all, delete-orphan")
     alerts = relationship("AlertHistory", back_populates="user", cascade="all, delete-orphan")
 
-
 class UserPreference(Base):
     __tablename__ = "user_preferences"
 
@@ -39,7 +36,6 @@ class UserPreference(Base):
 
     user = relationship("User", back_populates="preferences")
 
-
 class SavedLocation(Base):
     __tablename__ = "saved_locations"
 
@@ -51,7 +47,6 @@ class SavedLocation(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, nullable=False)
 
     user = relationship("User", back_populates="locations")
-
 
 class PushSubscription(Base):
     __tablename__ = "push_subscriptions"
@@ -65,7 +60,6 @@ class PushSubscription(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, nullable=False)
 
     user = relationship("User", back_populates="subscriptions")
-
 
 class AlertHistory(Base):
     __tablename__ = "alert_history"

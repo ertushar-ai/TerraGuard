@@ -49,8 +49,7 @@ function getAlertPreferences() {
             return defaultPreferences;
         }
 
-        const parsed =
-            JSON.parse(stored);
+        const parsed = JSON.parse(stored);
 
         if (
             !parsed ||
@@ -78,14 +77,10 @@ function meetsMinimumSeverity(
     minimumSeverity
 ) {
     const alertLevel =
-        terraGuardSeverityOrder[
-            alertRisk
-        ] || 0;
+        terraGuardSeverityOrder[alertRisk] || 0;
 
     const minimumLevel =
-        terraGuardSeverityOrder[
-            minimumSeverity
-        ] || 0;
+        terraGuardSeverityOrder[minimumSeverity] || 0;
 
     return alertLevel >= minimumLevel;
 }
@@ -117,9 +112,7 @@ function applyAlertPreferences(alerts) {
         }
 
         return meetsMinimumSeverity(
-            String(
-                alert.risk || "Low"
-            ),
+            String(alert.risk || "Low"),
             preferences.minimumSeverity ||
                 terraGuardAlertConfig.preferences
                     .defaultMinimumSeverity
@@ -127,26 +120,70 @@ function applyAlertPreferences(alerts) {
     });
 }
 
-async function checkAlerts(monitoringData = {}) {
+async function checkAlerts(
+    monitoringData = {}
+) {
     const currentLocation =
-        localStorage.getItem("terraGuardLocation") || "Delhi";
+        localStorage.getItem("terraGuardLocation") ||
+        "Delhi";
 
-    const latitude = Number(localStorage.getItem("terraGuardLatitude")) || 28.6139;
-    const longitude = Number(localStorage.getItem("terraGuardLongitude")) || 77.2090;
+    const latitude =
+        Number(
+            localStorage.getItem(
+                "terraGuardLatitude"
+            )
+        ) || 28.6139;
+
+    const longitude =
+        Number(
+            localStorage.getItem(
+                "terraGuardLongitude"
+            )
+        ) || 77.2090;
 
     try {
-        if (window.TerraGuardAPI && typeof window.TerraGuardAPI.checkAlerts === "function" && localStorage.getItem("terraGuardAccessToken")) {
-            const response = await window.TerraGuardAPI.checkAlerts(latitude, longitude, currentLocation);
-            if (response && Array.isArray(response.alerts)) {
-                console.log("TerraGuard Python Centralized Alerts:", response.alerts);
+        if (
+            window.TerraGuardAPI &&
+            typeof window.TerraGuardAPI.checkAlerts ===
+                "function" &&
+            localStorage.getItem(
+                "terraGuardAccessToken"
+            )
+        ) {
+            const response =
+                await window.TerraGuardAPI.checkAlerts(
+                    latitude,
+                    longitude,
+                    currentLocation
+                );
+
+            if (
+                response &&
+                Array.isArray(response.alerts)
+            ) {
+                console.log(
+                    "TerraGuard Python Centralized Alerts:",
+                    response.alerts
+                );
+
+                displayAlerts(response.alerts);
+
+                window.TerraGuardAlertsData =
+                    response.alerts;
+
                 return response.alerts;
             }
         }
     } catch (backendError) {
-        console.warn("Backend alert check failed, falling back to local evaluation:", backendError);
+        console.warn(
+            "Backend alert check failed, falling back to local evaluation:",
+            backendError
+        );
     }
 
-    const preferences = getAlertPreferences();
+    const preferences =
+        getAlertPreferences();
+
     const alerts = [];
 
     let weather =
@@ -282,9 +319,7 @@ async function checkAlerts(monitoringData = {}) {
         }
 
         if (
-            Number.isFinite(
-                windSpeed
-            ) &&
+            Number.isFinite(windSpeed) &&
             windSpeed >=
                 terraGuardAlertConfig
                     .weather
@@ -320,8 +355,7 @@ async function checkAlerts(monitoringData = {}) {
             if (result) {
                 const risk =
                     String(
-                        result.risk ||
-                        "Low"
+                        result.risk || "Low"
                     );
 
                 const duration =
@@ -383,8 +417,7 @@ async function checkAlerts(monitoringData = {}) {
                         title:
                             `${risk} Landslide Risk`,
                         message,
-                        time:
-                            new Date(),
+                        time: new Date(),
                         source:
                             result.dataSource ||
                             "Rainfall Monitoring"
@@ -408,8 +441,7 @@ async function checkAlerts(monitoringData = {}) {
                             "High Rainfall Intensity",
                         message:
                             `Rainfall intensity has reached ${intensity.toFixed(1)} mm/h near ${currentLocation}. Continued rainfall may increase landslide risk.`,
-                        time:
-                            new Date(),
+                        time: new Date(),
                         source:
                             result.dataSource ||
                             "Rainfall Monitoring"
@@ -433,8 +465,7 @@ async function checkAlerts(monitoringData = {}) {
                             "Prolonged Rainfall Alert",
                         message:
                             `Continuous rainfall has lasted approximately ${duration.toFixed(1)} hours near ${currentLocation}. Prolonged rainfall can increase landslide risk.`,
-                        time:
-                            new Date(),
+                        time: new Date(),
                         source:
                             result.dataSource ||
                             "Rainfall Monitoring"
@@ -458,8 +489,7 @@ async function checkAlerts(monitoringData = {}) {
                             "Heavy Rainfall Event",
                         message:
                             `Hourly rainfall has reached ${peakRainfall.toFixed(1)} mm near ${currentLocation}. Monitor the area for increasing landslide risk.`,
-                        time:
-                            new Date(),
+                        time: new Date(),
                         source:
                             result.dataSource ||
                             "Rainfall Monitoring"
@@ -500,14 +530,11 @@ async function checkAlerts(monitoringData = {}) {
 
         const risk =
             String(
-                earthquakeRisk ||
-                "Safe"
+                earthquakeRisk || "Safe"
             );
 
         if (
-            Number.isFinite(
-                magnitude
-            ) &&
+            Number.isFinite(magnitude) &&
             magnitude >=
                 terraGuardAlertConfig
                     .earthquake
@@ -517,18 +544,14 @@ async function checkAlerts(monitoringData = {}) {
                 `Magnitude ${magnitude.toFixed(1)} earthquake detected near ${currentLocation}.`;
 
             if (
-                Number.isFinite(
-                    distance
-                )
+                Number.isFinite(distance)
             ) {
                 message +=
                     ` The event is approximately ${distance.toFixed(1)} km away.`;
             }
 
             if (
-                Number.isFinite(
-                    depth
-                )
+                Number.isFinite(depth)
             ) {
                 message +=
                     ` Depth: ${depth.toFixed(1)} km.`;
@@ -568,9 +591,7 @@ async function checkAlerts(monitoringData = {}) {
                 `${risk} earthquake activity detected near ${currentLocation}.`;
 
             if (
-                Number.isFinite(
-                    magnitude
-                ) &&
+                Number.isFinite(magnitude) &&
                 magnitude > 0
             ) {
                 message +=
@@ -578,9 +599,7 @@ async function checkAlerts(monitoringData = {}) {
             }
 
             if (
-                Number.isFinite(
-                    distance
-                )
+                Number.isFinite(distance)
             ) {
                 message +=
                     ` Distance: ${distance.toFixed(1)} km.`;
@@ -639,14 +658,28 @@ async function checkAlerts(monitoringData = {}) {
             )
     );
 
-    displayAlerts(
-        filteredAlerts
-    );
+    displayAlerts(filteredAlerts);
 
     window.TerraGuardAlertsData =
         filteredAlerts;
 
     return filteredAlerts;
+}
+
+async function initializeAlerts(
+    location = null,
+    monitoringData = {}
+) {
+    if (location) {
+        localStorage.setItem(
+            "terraGuardLocation",
+            location
+        );
+    }
+
+    return await checkAlerts(
+        monitoringData
+    );
 }
 
 function displayAlerts(alerts) {
@@ -833,9 +866,7 @@ function getNotifiedAlerts() {
         const parsed =
             JSON.parse(stored);
 
-        return Array.isArray(
-            parsed
-        )
+        return Array.isArray(parsed)
             ? parsed
             : [];
     } catch (error) {
@@ -1071,12 +1102,15 @@ window.TerraGuardAlerts = {
     meetsMinimumSeverity
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-    if (
-        !document.querySelector(
-            "[data-dashboard-weather-condition]"
-        )
-    ) {
-        initializeAlerts();
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+        if (
+            !document.querySelector(
+                "[data-dashboard-weather-condition]"
+            )
+        ) {
+            initializeAlerts();
+        }
     }
-});
+);

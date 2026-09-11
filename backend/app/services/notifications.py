@@ -2,10 +2,8 @@ from typing import Iterable
 
 from app.core.config import VAPID_PRIVATE_KEY, VAPID_SUBJECT
 
-
 def push_enabled() -> bool:
     return bool(VAPID_PRIVATE_KEY and VAPID_SUBJECT)
-
 
 def send_web_push(subscription_info: dict, payload: dict) -> None:
     if not push_enabled():
@@ -18,7 +16,6 @@ def send_web_push(subscription_info: dict, payload: dict) -> None:
         vapid_claims={"sub": VAPID_SUBJECT},
     )
 
-
 def notify_subscriptions(subscriptions: Iterable, payload: dict) -> int:
     sent = 0
     for subscription in subscriptions:
@@ -30,6 +27,5 @@ def notify_subscriptions(subscriptions: Iterable, payload: dict) -> int:
             send_web_push(info, payload)
             sent += 1
         except Exception:
-            # A single stale/invalid browser subscription must not break alert generation.
             continue
     return sent

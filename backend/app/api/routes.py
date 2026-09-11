@@ -23,10 +23,8 @@ from app.services.weather import get_weather
 
 router = APIRouter()
 
-
 def user_response(user: User) -> AuthUser:
     return AuthUser(id=user.id, name=user.name, email=user.email)
-
 
 def prefs_response(pref: UserPreference) -> PreferenceResponse:
     return PreferenceResponse(
@@ -38,14 +36,12 @@ def prefs_response(pref: UserPreference) -> PreferenceResponse:
         email=pref.email_notifications,
     )
 
-
 @router.get("/locations/search")
 async def locations_search(q: str = Query(min_length=2), limit: int = Query(5, ge=1, le=10)):
     try:
         return await search_locations(q, limit)
     except Exception as exc:
         raise HTTPException(502, f"Location service failed: {exc}") from exc
-
 
 @router.get("/locations/reverse", response_model=ReverseGeocodeResponse)
 async def locations_reverse(latitude: float, longitude: float):
@@ -54,14 +50,12 @@ async def locations_reverse(latitude: float, longitude: float):
     except Exception as exc:
         raise HTTPException(502, f"Reverse geocoding failed: {exc}") from exc
 
-
 @router.get("/weather")
 async def weather(latitude: float, longitude: float, location: str = "Delhi"):
     try:
         return await get_weather(latitude, longitude, location)
     except Exception as exc:
         raise HTTPException(502, f"Weather service failed: {exc}") from exc
-
 
 @router.get("/earthquakes")
 async def earthquakes(latitude: float, longitude: float, location: str = "Delhi"):
@@ -70,14 +64,12 @@ async def earthquakes(latitude: float, longitude: float, location: str = "Delhi"
     except Exception as exc:
         raise HTTPException(502, f"Earthquake service failed: {exc}") from exc
 
-
 @router.get("/landslide")
 async def landslide(latitude: float, longitude: float, location: str = "Delhi"):
     try:
         return await get_landslide(latitude, longitude, location)
     except Exception as exc:
         raise HTTPException(502, f"Landslide service failed: {exc}") from exc
-
 
 @router.get("/alerts")
 async def alerts(latitude: float, longitude: float, location: str = "Delhi"):
@@ -95,7 +87,6 @@ async def alerts(latitude: float, longitude: float, location: str = "Delhi"):
     except Exception as exc:
         raise HTTPException(502, f"Alert aggregation failed: {exc}") from exc
 
-
 @router.post("/auth/signup", response_model=AuthResponse)
 def signup(payload: SignupRequest, db: Session = Depends(get_db)):
     email = payload.email.lower().strip()
@@ -109,7 +100,6 @@ def signup(payload: SignupRequest, db: Session = Depends(get_db)):
     db.refresh(user)
     return AuthResponse(access_token=create_access_token(user.id), user=user_response(user))
 
-
 @router.post("/auth/login", response_model=AuthResponse)
 def login(payload: LoginRequest, db: Session = Depends(get_db)):
     email = payload.email.lower().strip()
@@ -118,11 +108,9 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)):
         raise HTTPException(401, "Invalid email or password")
     return AuthResponse(access_token=create_access_token(user.id), user=user_response(user))
 
-
 @router.get("/auth/me", response_model=AuthUser)
 def me(user: User = Depends(get_current_user)):
     return user_response(user)
-
 
 @router.get("/preferences", response_model=PreferenceResponse)
 def get_preferences(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
@@ -133,7 +121,6 @@ def get_preferences(user: User = Depends(get_current_user), db: Session = Depend
         db.commit()
         db.refresh(pref)
     return prefs_response(pref)
-
 
 @router.put("/preferences", response_model=PreferenceResponse)
 def update_preferences(payload: AlertPreferences, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
@@ -154,12 +141,10 @@ def update_preferences(payload: AlertPreferences, user: User = Depends(get_curre
     db.refresh(pref)
     return prefs_response(pref)
 
-
 @router.get("/locations", response_model=list[SavedLocationRequest])
 def saved_locations(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     rows = db.scalars(select(SavedLocation).where(SavedLocation.user_id == user.id).order_by(SavedLocation.id.desc())).all()
     return [SavedLocationRequest(name=x.name, latitude=x.latitude, longitude=x.longitude) for x in rows]
-
 
 @router.post("/locations", response_model=SavedLocationRequest)
 def save_location(payload: SavedLocationRequest, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
@@ -168,11 +153,9 @@ def save_location(payload: SavedLocationRequest, user: User = Depends(get_curren
     db.commit()
     return payload
 
-
 @router.get("/notifications/vapid-public-key")
 def vapid_public_key():
     return {"publicKey": VAPID_PUBLIC_KEY, "enabled": push_enabled()}
-
 
 @router.post("/notifications/subscribe")
 def subscribe_push(payload: PushSubscriptionRequest, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
@@ -192,7 +175,6 @@ def subscribe_push(payload: PushSubscriptionRequest, user: User = Depends(get_cu
     db.commit()
     return {"status": "subscribed", "pushEnabled": push_enabled()}
 
-
 @router.delete("/notifications/subscribe")
 def unsubscribe_push(endpoint: str, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     row = db.scalar(select(PushSubscription).where(PushSubscription.endpoint == endpoint, PushSubscription.user_id == user.id))
@@ -200,7 +182,6 @@ def unsubscribe_push(endpoint: str, user: User = Depends(get_current_user), db: 
         db.delete(row)
         db.commit()
     return {"status": "unsubscribed"}
-
 
 @router.post("/alerts/check")
 async def check_alerts(latitude: float, longitude: float, location: str = "Delhi", user: User = Depends(get_current_user), db: Session = Depends(get_db)):
@@ -259,7 +240,6 @@ async def check_alerts(latitude: float, longitude: float, location: str = "Delhi
 
     return {"location": location, "alerts": eligible, "notificationConfigured": push_enabled()}
 
-
 @router.get("/alerts/history", response_model=list[Alert])
 def alert_history(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     rows = db.scalars(select(AlertHistory).where(AlertHistory.user_id == user.id).order_by(AlertHistory.created_at.desc()).limit(50)).all()
@@ -268,7 +248,6 @@ def alert_history(user: User = Depends(get_current_user), db: Session = Depends(
         message=x.message, location=x.location,
         timestamp=x.created_at.isoformat(), metadata={"notified": x.notified},
     ) for x in rows]
-
 
 @router.get("/config")
 def config():

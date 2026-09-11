@@ -1,6 +1,4 @@
-/* =========================================================
-   TerraGuard - Automatic GPS Location
-   ========================================================= */
+
 
    (() => {
     "use strict";
@@ -19,10 +17,6 @@
         longitude: 77.2090,
         displayName: "Delhi, India"
     };
-
-    // ---------------------------------------------------------
-    // Read saved location
-    // ---------------------------------------------------------
 
     function getSavedLocation() {
         const name =
@@ -53,10 +47,6 @@
         return null;
     }
 
-    // ---------------------------------------------------------
-    // Save location
-    // ---------------------------------------------------------
-
     function saveLocation(location) {
         localStorage.setItem(
             KEYS.location,
@@ -78,10 +68,6 @@
             JSON.stringify(location)
         );
     }
-
-    // ---------------------------------------------------------
-    // Notification
-    // ---------------------------------------------------------
 
     function showMessage(message, type = "info") {
         if (
@@ -131,10 +117,6 @@
             box.remove();
         }, 5000);
     }
-
-    // ---------------------------------------------------------
-    // Get browser GPS
-    // ---------------------------------------------------------
 
     function getBrowserLocation() {
         return new Promise(
@@ -218,10 +200,6 @@
         );
     }
 
-    // ---------------------------------------------------------
-    // Reverse geocode GPS coordinates
-    // ---------------------------------------------------------
-
     async function reverseGeocode(
         latitude,
         longitude
@@ -303,10 +281,6 @@
         };
     }
 
-    // ---------------------------------------------------------
-    // Update UI
-    // ---------------------------------------------------------
-
     function updateUI(location) {
 
         if (
@@ -356,10 +330,6 @@
             });
     }
 
-    // ---------------------------------------------------------
-    // Distance check
-    // ---------------------------------------------------------
-
     function distanceInMeters(
         lat1,
         lon1,
@@ -391,10 +361,6 @@
             )
         );
     }
-
-    // ---------------------------------------------------------
-    // Detect + save
-    // ---------------------------------------------------------
 
     async function detectLocation(
         reloadAfterDetection = false
@@ -470,14 +436,6 @@
                 "success"
             );
 
-            /*
-             * Reload only when necessary.
-             *
-             * This makes weather / earthquake /
-             * landslide modules read the new GPS
-             * coordinates from LocalStorage.
-             */
-
             if (
                 reloadAfterDetection &&
                 moved
@@ -521,10 +479,6 @@
         }
     }
 
-    // ---------------------------------------------------------
-    // Check permission state
-    // ---------------------------------------------------------
-
     async function getPermissionState() {
 
         if (
@@ -548,10 +502,6 @@
         }
     }
 
-    // ---------------------------------------------------------
-    // Initialize
-    // ---------------------------------------------------------
-
     async function initialize() {
 
         const saved =
@@ -574,14 +524,6 @@
             }
         );
 
-        /*
-         * FIRST VISIT
-         *
-         * Even if an old manual location exists,
-         * if GPS permission has never been initialized,
-         * explicitly request the browser location.
-         */
-
         if (
             !gpsInitialized ||
             permission === "prompt"
@@ -594,13 +536,6 @@
             return;
         }
 
-        /*
-         * Permission already granted.
-         *
-         * Refresh GPS automatically when the user
-         * returns to the dashboard.
-         */
-
         if (
             permission === "granted"
         ) {
@@ -611,13 +546,6 @@
 
             return;
         }
-
-        /*
-         * Permission denied.
-         *
-         * Don't repeatedly annoy the user.
-         * Use the saved/manual location.
-         */
 
         if (saved) {
             updateUI(saved);
@@ -633,10 +561,6 @@
         );
     }
 
-    // ---------------------------------------------------------
-    // Public API
-    // ---------------------------------------------------------
-
     window.TerraGuardLocation = {
 
         detect: () =>
@@ -648,10 +572,6 @@
 
         request: getBrowserLocation
     };
-
-    // ---------------------------------------------------------
-    // Start
-    // ---------------------------------------------------------
 
     if (
         document.readyState ===

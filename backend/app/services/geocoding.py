@@ -3,7 +3,6 @@ from app.core.config import settings
 
 NOMINATIM_URL = "https://nominatim.openstreetmap.org/search"
 
-
 async def search_locations(query: str, limit: int = 5):
     params = {
         "q": query,

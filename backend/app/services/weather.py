@@ -17,7 +17,6 @@ WEATHER_CODES = {
     95: "Thunderstorm", 96: "Thunderstorm with Hail", 99: "Thunderstorm with Heavy Hail",
 }
 
-
 def calculate_weather_risk(data):
     score = 0
     reasons = []
@@ -65,7 +64,6 @@ def calculate_weather_risk(data):
         level = "Low"
 
     return {"level": level, "score": score, "reasons": reasons}
-
 
 async def get_weather(latitude: float, longitude: float, location: str):
     params = {

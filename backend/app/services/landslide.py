@@ -11,11 +11,9 @@ THRESHOLDS = {
     "duration24h": 24, "intensity5": 5, "intensity10": 10, "intensity20": 20,
 }
 
-
 def sum_hours(values, end_index, hours):
     start = max(0, end_index - hours + 1)
     return round(sum(float(v or 0) for v in values[start:end_index + 1]), 2)
-
 
 def calculate_event(values, current_index):
     amount = 0
@@ -47,7 +45,6 @@ def calculate_event(values, current_index):
         "intensity": round(intensity, 2),
         "peak": round(peak, 2),
     }
-
 
 def calculate_risk(data):
     score = 0
@@ -92,7 +89,6 @@ def calculate_risk(data):
 
     percentage = min(100, round((score / 33) * 100))
     return {"risk": risk, "score": score, "percentage": percentage, "triggered": triggered}
-
 
 async def get_landslide(latitude, longitude, location):
     params = {

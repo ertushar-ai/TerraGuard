@@ -7,7 +7,9 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        window.TERRAGUARD_API_BASE = "http://127.0.0.1:8000/api";
+        if (window.location.hostname) {
+            window.TERRAGUARD_API_BASE = `${window.location.protocol}//${window.location.hostname}:8000/api`;
+        }
     </script>
     <script>
         tailwind.config = {
@@ -29,7 +31,7 @@
     <link rel="stylesheet" href="css/components.css">
 </head>
 
-<body class="bg-cream text-dark">
+<body class="bg-cream text-dark" data-dashboard="true">
 
     <nav class="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

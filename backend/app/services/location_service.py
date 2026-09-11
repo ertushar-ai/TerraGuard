@@ -8,10 +8,8 @@ HEADERS = {
     "User-Agent": "TerraGuard/2.0 (academic disaster monitor; contact@terraguard.local)",
 }
 
-
 def validate_coordinates(latitude: float, longitude: float) -> bool:
     return -90.0 <= latitude <= 90.0 and -180.0 <= longitude <= 180.0
-
 
 async def reverse_geocode(latitude: float, longitude: float) -> dict:
     if not validate_coordinates(latitude, longitude):
@@ -61,7 +59,6 @@ async def reverse_geocode(latitude: float, longitude: float) -> dict:
             "address": {},
             "error": str(exc),
         }
-
 
 async def search_locations(query: str, limit: int = 5) -> list[dict]:
     params = {

@@ -13,11 +13,6 @@
 
     <title>TerraGuard - Landslide Monitoring</title>
 
-
-    <!-- =====================================================
-         TAILWIND CSS
-    ====================================================== -->
-
     <script src="https://cdn.tailwindcss.com"></script>
 
     <script>
@@ -46,11 +41,6 @@
 
     </script>
 
-
-    <!-- =====================================================
-         CSS
-    ====================================================== -->
-
     <link
         rel="stylesheet"
         href="../css/style.css"
@@ -63,22 +53,13 @@
 
 </head>
 
-
 <body class="bg-cream text-dark">
-
-
-    <!-- =====================================================
-         NAVBAR
-    ====================================================== -->
 
     <nav class="navbar">
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
             <div class="flex items-center justify-between h-16">
-
-
-                <!-- Logo -->
 
                 <a
                     href="../index.html"
@@ -108,9 +89,6 @@
                     </div>
 
                 </a>
-
-
-                <!-- Desktop Navigation -->
 
                 <div class="hidden md:flex items-center gap-6">
 
@@ -151,9 +129,6 @@
 
                 </div>
 
-
-                <!-- Location -->
-
                 <div class="hidden md:flex items-center gap-2">
 
                     <span>
@@ -169,9 +144,6 @@
 
                 </div>
 
-
-                <!-- Mobile Menu -->
-
                 <button
                     id="mobile-menu-button"
                     class="md:hidden text-xl"
@@ -181,9 +153,6 @@
                 </button>
 
             </div>
-
-
-            <!-- Mobile Navigation -->
 
             <div
                 id="mobile-menu"
@@ -223,18 +192,7 @@
 
     </nav>
 
-
-
-    <!-- =====================================================
-         MAIN
-    ====================================================== -->
-
     <main>
-
-
-        <!-- =================================================
-             PAGE HEADER
-        ================================================== -->
 
         <section
             class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-6"
@@ -264,9 +222,6 @@
 
                 </div>
 
-
-                <!-- Refresh -->
-
                 <button
                     data-landslide-refresh
                     class="px-5 py-3 rounded-lg bg-primary text-cream font-semibold hover:opacity-90 transition"
@@ -278,12 +233,6 @@
 
         </section>
 
-
-
-        <!-- =================================================
-             RISK OVERVIEW
-        ================================================== -->
-
         <section
             class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8"
         >
@@ -291,9 +240,6 @@
             <div
                 class="grid grid-cols-1 lg:grid-cols-3 gap-6"
             >
-
-
-                <!-- Main Risk Card -->
 
                 <div
                     class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8"
@@ -317,7 +263,6 @@
                             </h3>
 
                         </div>
-
 
                         <div class="text-left sm:text-right">
 
@@ -347,9 +292,6 @@
 
                     </div>
 
-
-                    <!-- Risk Progress -->
-
                     <div class="mt-8">
 
                         <div
@@ -369,7 +311,6 @@
 
                         </div>
 
-
                         <div class="risk-progress">
 
                             <div
@@ -381,9 +322,6 @@
                         </div>
 
                     </div>
-
-
-                    <!-- Description -->
 
                     <div
                         class="mt-7 p-4 rounded-lg bg-cream"
@@ -398,9 +336,6 @@
                         </p>
 
                     </div>
-
-
-                    <!-- Rainfall Event -->
 
                     <div
                         class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4"
@@ -423,7 +358,6 @@
 
                         </div>
 
-
                         <div
                             class="rounded-lg border border-gray-200 p-4"
                         >
@@ -445,10 +379,6 @@
 
                 </div>
 
-
-
-                <!-- Monitoring Status -->
-
                 <div
                     class="bg-dark text-cream rounded-2xl shadow-sm p-6"
                 >
@@ -465,11 +395,9 @@
 
                     </div>
 
-
                     <h3 class="text-xl font-bold mt-7">
                         What TerraGuard Checks
                     </h3>
-
 
                     <ul
                         class="mt-5 space-y-4 text-sm opacity-90"
@@ -487,7 +415,6 @@
 
                         </li>
 
-
                         <li class="flex gap-3">
 
                             <span>
@@ -499,7 +426,6 @@
                             </span>
 
                         </li>
-
 
                         <li class="flex gap-3">
 
@@ -513,7 +439,6 @@
 
                         </li>
 
-
                         <li class="flex gap-3">
 
                             <span>
@@ -526,7 +451,6 @@
 
                         </li>
 
-
                         <li class="flex gap-3">
 
                             <span>
@@ -538,7 +462,6 @@
                             </span>
 
                         </li>
-
 
                         <li class="flex gap-3">
 
@@ -560,12 +483,6 @@
 
         </section>
 
-
-
-        <!-- =================================================
-             RAINFALL MONITORING PARAMETERS
-        ================================================== -->
-
         <section
             class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10"
         >
@@ -579,13 +496,9 @@
                 for landslide risk estimation.
             </p>
 
-
             <div
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"
             >
-
-
-                <!-- 1 Hour -->
 
                 <div
                     class="bg-white rounded-xl p-5 shadow-sm border border-gray-200"
@@ -613,7 +526,7 @@
                         data-landslide-rainfall-1
                         class="text-2xl font-bold mt-1"
                     >
-                        -- mm
+                                -- mm
                     </p>
 
                     <p class="text-xs text-gray-500 mt-2">
@@ -621,10 +534,6 @@
                     </p>
 
                 </div>
-
-
-
-                <!-- 3 Hours -->
 
                 <div
                     class="bg-white rounded-xl p-5 shadow-sm border border-gray-200"
@@ -652,7 +561,7 @@
                         data-landslide-rainfall-3
                         class="text-2xl font-bold mt-1"
                     >
-                        -- mm
+                                -- mm
                     </p>
 
                     <p class="text-xs text-gray-500 mt-2">
@@ -660,10 +569,6 @@
                     </p>
 
                 </div>
-
-
-
-                <!-- 6 Hours -->
 
                 <div
                     class="bg-white rounded-xl p-5 shadow-sm border border-gray-200"
@@ -691,7 +596,7 @@
                         data-landslide-rainfall-6
                         class="text-2xl font-bold mt-1"
                     >
-                        -- mm
+                                -- mm
                     </p>
 
                     <p class="text-xs text-gray-500 mt-2">
@@ -699,10 +604,6 @@
                     </p>
 
                 </div>
-
-
-
-                <!-- 12 Hours -->
 
                 <div
                     class="bg-white rounded-xl p-5 shadow-sm border border-gray-200"
@@ -730,7 +631,7 @@
                         data-landslide-rainfall-12
                         class="text-2xl font-bold mt-1"
                     >
-                        -- mm
+                                -- mm
                     </p>
 
                     <p class="text-xs text-gray-500 mt-2">
@@ -738,10 +639,6 @@
                     </p>
 
                 </div>
-
-
-
-                <!-- 24 Hours -->
 
                 <div
                     class="bg-white rounded-xl p-5 shadow-sm border border-gray-200"
@@ -769,7 +666,7 @@
                         data-landslide-rainfall-24
                         class="text-2xl font-bold mt-1"
                     >
-                        -- mm
+                                -- mm
                     </p>
 
                     <p class="text-xs text-gray-500 mt-2">
@@ -777,10 +674,6 @@
                     </p>
 
                 </div>
-
-
-
-                <!-- 72 Hours -->
 
                 <div
                     class="bg-white rounded-xl p-5 shadow-sm border border-gray-200"
@@ -808,7 +701,7 @@
                         data-landslide-rainfall-72
                         class="text-2xl font-bold mt-1"
                     >
-                        -- mm
+                                -- mm
                     </p>
 
                     <p class="text-xs text-gray-500 mt-2">
@@ -816,10 +709,6 @@
                     </p>
 
                 </div>
-
-
-
-                <!-- 7 Days -->
 
                 <div
                     class="bg-white rounded-xl p-5 shadow-sm border border-gray-200"
@@ -847,7 +736,7 @@
                         data-landslide-rainfall-7
                         class="text-2xl font-bold mt-1"
                     >
-                        -- mm
+                                -- mm
                     </p>
 
                     <p class="text-xs text-gray-500 mt-2">
@@ -855,10 +744,6 @@
                     </p>
 
                 </div>
-
-
-
-                <!-- Duration -->
 
                 <div
                     class="bg-white rounded-xl p-5 shadow-sm border border-gray-200"
@@ -886,8 +771,8 @@
                         data-landslide-duration
                         class="text-2xl font-bold mt-1"
                     >
-                        -- hours
-                    </p>
+                                -- hours
+                            </p>
 
                     <p class="text-xs text-gray-500 mt-2">
                         Current rainfall event
@@ -898,12 +783,6 @@
             </div>
 
         </section>
-
-
-
-        <!-- =================================================
-             RISK TRIGGERS
-        ================================================== -->
 
         <section
             class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10"
@@ -923,13 +802,9 @@
                     landslide risk.
                 </p>
 
-
                 <div
                     class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-6"
                 >
-
-
-                    <!-- Intensity -->
 
                     <div
                         class="rounded-lg bg-cream p-5"
@@ -951,18 +826,14 @@
                                     data-landslide-intensity
                                     class="text-xl font-bold"
                                 >
-                                    -- mm/h
-                                </p>
+                                -- mm/h
+                            </p>
 
                             </div>
 
                         </div>
 
                     </div>
-
-
-
-                    <!-- Duration -->
 
                     <div
                         class="rounded-lg bg-cream p-5"
@@ -984,8 +855,8 @@
                                     data-landslide-duration
                                     class="text-xl font-bold"
                                 >
-                                    -- hours
-                                </p>
+                                -- hours
+                            </p>
 
                             </div>
 
@@ -994,10 +865,6 @@
                     </div>
 
                 </div>
-
-
-
-                <!-- Trigger List -->
 
                 <div class="mt-6">
 
@@ -1020,12 +887,6 @@
 
         </section>
 
-
-
-        <!-- =================================================
-             RISK SCALE
-        ================================================== -->
-
         <section
             class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12"
         >
@@ -1044,13 +905,9 @@
                     duration.
                 </p>
 
-
                 <div
                     class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6"
                 >
-
-
-                    <!-- Low -->
 
                     <div
                         class="rounded-lg border border-gray-200 p-4"
@@ -1075,10 +932,6 @@
 
                     </div>
 
-
-
-                    <!-- Moderate -->
-
                     <div
                         class="rounded-lg border border-gray-200 p-4"
                     >
@@ -1101,10 +954,6 @@
                         </p>
 
                     </div>
-
-
-
-                    <!-- High -->
 
                     <div
                         class="rounded-lg border border-gray-200 p-4"
@@ -1129,10 +978,6 @@
                         </p>
 
                     </div>
-
-
-
-                    <!-- Critical -->
 
                     <div
                         class="rounded-lg border border-gray-200 p-4"
@@ -1166,12 +1011,6 @@
 
     </main>
 
-
-
-    <!-- =====================================================
-         FOOTER
-    ====================================================== -->
-
     <footer class="bg-dark text-cream">
 
         <div
@@ -1181,9 +1020,6 @@
             <div
                 class="grid grid-cols-1 md:grid-cols-3 gap-8"
             >
-
-
-                <!-- Brand -->
 
                 <div>
 
@@ -1197,10 +1033,6 @@
                     </p>
 
                 </div>
-
-
-
-                <!-- Quick Links -->
 
                 <div>
 
@@ -1244,10 +1076,6 @@
 
                 </div>
 
-
-
-                <!-- Status -->
-
                 <div>
 
                     <h4 class="font-semibold mb-3">
@@ -1272,7 +1100,6 @@
 
             </div>
 
-
             <div
                 class="border-t border-white/10 mt-8 pt-5 text-sm opacity-60"
             >
@@ -1287,18 +1114,12 @@
 
     </footer>
 
-
-
-    <!-- =====================================================
-         JAVASCRIPT
-    ====================================================== -->
-
     <script src="../js/utils.js"></script>
+    <script src="../js/api.js"></script>
 
     <script src="../js/main.js"></script>
 
     <script src="../js/landslide.js"></script>
-
 
 </body>
 

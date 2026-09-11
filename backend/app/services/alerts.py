@@ -2,7 +2,6 @@ from datetime import datetime, timezone
 
 SEVERITY = {"Safe": 0, "Low": 1, "Moderate": 2, "High": 3, "Critical": 4}
 
-
 def generate_alerts(weather=None, landslide=None, earthquake=None, location="Delhi"):
     alerts = []
     now = datetime.now(timezone.utc).isoformat()

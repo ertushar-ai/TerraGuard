@@ -121,9 +121,10 @@ function setSubmitLoading(form, loading, defaultText) {
 }
 
 async function apiRequest(path, options = {}) {
-    const base =
-        window.TERRAGUARD_API_BASE ||
-        "http://127.0.0.1:8000/api";
+    const defaultBase = window.location.hostname
+        ? `${window.location.protocol}//${window.location.hostname}:8000/api`
+        : "http://127.0.0.1:8000/api";
+    const base = window.TERRAGUARD_API_BASE || defaultBase;
 
     const headers = {
         ...(options.headers || {})

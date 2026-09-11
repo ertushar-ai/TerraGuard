@@ -11,7 +11,9 @@
     <link rel="stylesheet" href="../css/auth.css">
 
     <script>
-        window.TERRAGUARD_API_BASE = "http://127.0.0.1:8000/api";
+        if (window.location.hostname) {
+            window.TERRAGUARD_API_BASE = `${window.location.protocol}//${window.location.hostname}:8000/api`;
+        }
     </script>
 
     <script src="../js/auth.js"></script>
@@ -21,13 +23,10 @@
 
     <main class="auth-page">
 
-        <!-- =====================================================
-             PROGRAMMATIC ANIME NATURE BACKGROUND SCENE
-             ===================================================== -->
         <div class="auth-scene" aria-hidden="true">
             <svg viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                    <!-- SKY GRADIENTS -->
+
                     <linearGradient id="tgRainSky" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="0%" stop-color="#1b282d"/>
                         <stop offset="35%" stop-color="#2a3d3c"/>
@@ -41,7 +40,6 @@
                         <stop offset="100%" stop-color="#1b282d" stop-opacity="0"/>
                     </radialGradient>
 
-                    <!-- MOUNTAIN GRADIENTS -->
                     <linearGradient id="tgMountainFar" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="0%" stop-color="#3d5550"/>
                         <stop offset="60%" stop-color="#2c3e3a"/>
@@ -60,7 +58,6 @@
                         <stop offset="100%" stop-color="#0f1907"/>
                     </linearGradient>
 
-                    <!-- WATER GRADIENT & REFLECTIONS -->
                     <linearGradient id="tgRiver" x1="0" y1="0" x2="1" y2="0">
                         <stop offset="0%" stop-color="#233e38" stop-opacity="0.6"/>
                         <stop offset="30%" stop-color="#3d645c" stop-opacity="0.85"/>
@@ -68,7 +65,6 @@
                         <stop offset="100%" stop-color="#233e38" stop-opacity="0.6"/>
                     </linearGradient>
 
-                    <!-- FOLIAGE & TRUNK GRADIENTS -->
                     <linearGradient id="tgTrunk" x1="0" y1="0" x2="1" y2="0">
                         <stop offset="0%" stop-color="#16120b"/>
                         <stop offset="40%" stop-color="#2b2419"/>
@@ -100,7 +96,6 @@
                         <stop offset="100%" stop-color="#384c19"/>
                     </radialGradient>
 
-                    <!-- MIST GRADIENTS -->
                     <linearGradient id="tgMist1" x1="0" y1="0" x2="1" y2="0">
                         <stop offset="0%" stop-color="#9bb3aa" stop-opacity="0"/>
                         <stop offset="25%" stop-color="#b6cbc3" stop-opacity="0.35"/>
@@ -115,13 +110,12 @@
                         <stop offset="100%" stop-color="#7c968d" stop-opacity="0"/>
                     </linearGradient>
 
-                    <!-- REUSABLE LEAF CLUSTER DEFINITION -->
                     <g id="leafCluster">
                         <path d="M0,0 C-15,-20 -35,-15 -45,0 C-55,15 -35,35 -15,30 C0,35 20,30 25,15 C30,-5 15,-20 0,0 Z" fill="url(#tgFoliageDark)"/>
                         <path d="M-8,-5 C-22,-22 -40,-12 -42,5 C-42,20 -20,30 -5,22 C10,25 22,12 18,-2 C12,-18 -2,-22 -8,-5 Z" fill="url(#tgFoliageMid)"/>
                         <path d="M-15,-8 C-25,-18 -38,-5 -32,8 C-25,20 -8,22 2,12 C10,12 16,0 8,-10 C0,-18 -8,-15 -15,-8 Z" fill="url(#tgFoliageLight)"/>
                         <path d="M-10,-12 C-18,-18 -28,-10 -24,0 C-18,10 -5,12 2,5 C8,2 10,-8 2,-12 C-4,-15 -6,-12 -10,-12 Z" fill="url(#tgFoliageHighlight)" opacity="0.85"/>
-                        <!-- Individual leaf details -->
+
                         <path d="M-28,2 C-38,-4 -44,2 -40,10 C-36,15 -28,12 -28,2 Z" fill="#71883c"/>
                         <path d="M12,8 C22,4 28,10 24,18 C18,22 10,16 12,8 Z" fill="#536b2d"/>
                         <path d="M-5,-18 C-8,-26 2,-28 8,-22 C12,-16 2,-14 -5,-18 Z" fill="#98af53"/>
@@ -133,27 +127,22 @@
                     </g>
                 </defs>
 
-                <!-- 1. SKY BASE & ATMOSPHERIC GLOW -->
                 <rect width="1600" height="1000" fill="url(#tgRainSky)"/>
                 <rect width="1600" height="1000" fill="url(#tgSkyGlow)"/>
 
-                <!-- 2. RAINY CLOUD SCENE LAYERS -->
                 <g class="cloud-layer" opacity="0.6">
                     <path d="M-100,120 Q150,60 400,130 T900,100 T1400,140 T1700,90 L1700,-50 L-100,-50 Z" fill="#203033"/>
                     <path d="M-50,180 Q300,110 650,190 T1200,150 T1750,200 L1750,-50 L-50,-50 Z" fill="#2b3e40" opacity="0.7"/>
                 </g>
 
-                <!-- 3. LAYER 1: FAR BACKGROUND MOUNTAINS (HIMALAYAN SILHOUETTE) -->
                 <g id="far-mountains">
                     <path d="M-50,520 L80,430 L190,470 L340,360 L480,440 L620,330 L760,420 L920,310 L1080,410 L1240,340 L1390,430 L1520,370 L1650,480 L1650,750 L-50,750 Z" fill="url(#tgMountainFar)"/>
                     <path d="M340,360 L480,440 L620,330 L760,420" stroke="rgba(255,255,255,0.12)" stroke-width="3" fill="none"/>
                     <path d="M920,310 L1080,410 L1240,340" stroke="rgba(255,255,255,0.15)" stroke-width="3.5" fill="none"/>
                 </g>
 
-                <!-- 4. DISTANT MIST LAYER 1 -->
                 <path class="mist mist-slow" d="M-200,420 Q200,370 600,430 T1300,390 T1800,440 L1800,560 L-200,560 Z" fill="url(#tgMist1)"/>
 
-                <!-- 5. LAYER 2: MIDDLE MOUNTAINS & RIDGES -->
                 <g id="mid-mountains">
                     <path d="M-50,600 Q120,470 320,510 T720,440 T1150,490 T1650,430 L1650,850 L-50,850 Z" fill="url(#tgMountainMid)"/>
                     <path d="M320,510 C450,550 550,590 720,700" stroke="#1b2b1d" stroke-width="4" fill="none" opacity="0.4"/>
@@ -161,17 +150,14 @@
                     <path d="M-50,550 Q250,480 500,560 T1100,510 T1650,570 L1650,850 L-50,850 Z" fill="#203322" opacity="0.6"/>
                 </g>
 
-                <!-- 6. MIST LAYER 2 (BETWEEN MID AND FOREGROUND) -->
                 <path class="mist mist-medium" d="M-100,510 Q300,460 800,530 T1700,480 L1700,640 L-100,640 Z" fill="url(#tgMist2)"/>
 
-                <!-- 7. LAYER 3: FOREGROUND HILLS & VALLEY -->
                 <g id="fore-hills">
                     <path d="M-50,680 Q200,620 480,690 T950,780 L-50,1050 Z" fill="url(#tgMountainFore)"/>
                     <path d="M650,800 Q1050,640 1650,660 L1650,1050 L650,1050 Z" fill="url(#tgMountainFore)"/>
                     <path d="M200,820 Q600,740 1000,790 T1500,840 L1500,1050 L200,1050 Z" fill="#14220b"/>
                 </g>
 
-                <!-- 8. WINDING RIVER / STREAM -->
                 <g id="river-stream">
                     <path d="M680,730 C640,760 590,790 560,820 C520,860 480,900 420,940 C360,980 260,1010 100,1050 L350,1050 C500,1010 600,970 660,920 C720,870 740,830 770,780 Z" fill="url(#tgRiver)"/>
                     <path d="M630,765 C580,800 520,850 450,910" stroke="rgba(255,255,255,0.35)" stroke-width="2" fill="none" stroke-dasharray="20 10" class="water-ripple"/>
@@ -179,7 +165,6 @@
                     <ellipse cx="550" cy="830" rx="180" ry="25" fill="url(#tgMist1)" opacity="0.6" class="mist"/>
                 </g>
 
-                <!-- 9. DETAILED JAPANESE ANIME-INSPIRED TREES (LEFT & RIGHT FRAMING) -->
                 <g id="left-tree-group" class="tree-sway-left">
                     <g id="left-trunk">
                         <path d="M-80,1050 C-40,920 -10,750 30,620 C60,520 80,450 60,350 L110,340 C140,460 110,550 70,680 C30,810 10,930 -10,1050 Z" fill="url(#tgTrunk)"/>
@@ -244,7 +229,6 @@
                     </g>
                 </g>
 
-                <!-- 10. FOREGROUND BUSHES & GRASS AT BOTTOM EDGES -->
                 <g id="foreground-bushes">
                     <path d="M-50,1050 C20,980 120,950 220,970 C300,985 360,1020 420,1050 Z" fill="#14240a"/>
                     <path d="M-20,1050 C40,995 120,980 180,1005 C240,1030 280,1040 330,1050 Z" fill="#233811"/>
@@ -252,7 +236,6 @@
                     <path d="M1300,1050 C1370,1015 1450,1000 1530,1015 C1590,1025 1630,1040 1670,1050 Z" fill="#263d14"/>
                 </g>
 
-                <!-- 11. CONTINUOUS ANIMATED RAIN LAYERS -->
                 <g class="rain-container">
                     <g class="rain-layer rain-far">
                         <line x1="100" y1="-50" x2="80" y2="40" class="rain-drop drop-sm"/>
@@ -266,7 +249,7 @@
                         <line x1="1300" y1="-50" x2="1280" y2="40" class="rain-drop drop-sm"/>
                         <line x1="1450" y1="-50" x2="1430" y2="40" class="rain-drop drop-sm"/>
                         <line x1="1600" y1="-50" x2="1580" y2="40" class="rain-drop drop-sm"/>
-                        
+
                         <line x1="170" y1="250" x2="150" y2="340" class="rain-drop drop-sm"/>
                         <line x1="320" y1="250" x2="300" y2="340" class="rain-drop drop-sm"/>
                         <line x1="470" y1="250" x2="450" y2="340" class="rain-drop drop-sm"/>
@@ -323,7 +306,6 @@
                     </g>
                 </g>
 
-                <!-- 12. ANIMATED FALLING LEAVES -->
                 <g class="falling-leaves-container">
                     <use href="#leafSingle" class="falling-leaf leaf-1" x="200" y="150" transform="scale(1.4)"/>
                     <use href="#leafSingle" class="falling-leaf leaf-2" x="380" y="120" transform="scale(1.2)"/>
@@ -333,14 +315,10 @@
                     <use href="#leafSingle" class="falling-leaf leaf-6" x="1400" y="140" transform="scale(1.2)"/>
                 </g>
 
-                <!-- 13. ATMOSPHERIC OVERLAY -->
                 <rect width="1600" height="1000" fill="url(#tgSkyGlow)" opacity="0.5" pointer-events="none"/>
             </svg>
         </div>
 
-        <!-- =====================================================
-             SIGNUP CARD
-             ===================================================== -->
         <section class="auth-card">
 
             <div class="auth-header">
@@ -351,7 +329,6 @@
                 <p>Create your TerraGuard account to receive personalized disaster alerts.</p>
             </div>
 
-            <!-- SIGNUP FORM -->
             <form id="signup-form" class="auth-form">
 
                 <div class="form-group">
@@ -374,7 +351,6 @@
                     <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password" autocomplete="new-password" minlength="8" required>
                 </div>
 
-                <!-- API message -->
                 <div id="signup-message" class="auth-message" style="display: none;"></div>
 
                 <button type="submit" class="auth-submit">Create Account</button>

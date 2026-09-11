@@ -1,4 +1,6 @@
 const CACHE_NAME = "terraguard-v1";
+const APP_ROOT = new URL("../", self.location.href);
+const NOTIFICATION_ICON = new URL("assets/icons/terraguard.png", APP_ROOT).href;
 
 self.addEventListener("install", event => {
     console.log("[TerraGuard SW] Installed");
@@ -14,8 +16,8 @@ self.addEventListener("push", event => {
     let data = {
         title: "TerraGuard Alert",
         body: "A new disaster alert has been received.",
-        icon: "/assets/favicon.png",
-        badge: "/assets/favicon.png"
+        icon: NOTIFICATION_ICON,
+        badge: NOTIFICATION_ICON
     };
 
     if (event.data) {
@@ -55,7 +57,7 @@ self.addEventListener("notificationclick", event => {
             }
 
             if (clients.openWindow) {
-                return clients.openWindow("/");
+                return clients.openWindow(APP_ROOT.href);
             }
         })
     );

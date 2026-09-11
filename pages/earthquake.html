@@ -13,11 +13,6 @@
 
     <title>TerraGuard - Earthquake Monitoring</title>
 
-
-    <!-- =====================================================
-         TAILWIND CSS
-    ====================================================== -->
-
     <script src="https://cdn.tailwindcss.com"></script>
 
     <script>
@@ -46,11 +41,6 @@
 
     </script>
 
-
-    <!-- =====================================================
-         CSS
-    ====================================================== -->
-
     <link
         rel="stylesheet"
         href="../css/style.css"
@@ -63,22 +53,13 @@
 
 </head>
 
-
 <body class="bg-cream text-dark">
-
-
-    <!-- =====================================================
-         NAVBAR
-    ====================================================== -->
 
     <nav class="navbar">
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
             <div class="flex items-center justify-between h-16">
-
-
-                <!-- Logo -->
 
                 <a
                     href="../index.html"
@@ -108,9 +89,6 @@
                     </div>
 
                 </a>
-
-
-                <!-- Desktop Navigation -->
 
                 <div class="hidden md:flex items-center gap-6">
 
@@ -151,9 +129,6 @@
 
                 </div>
 
-
-                <!-- Location -->
-
                 <div class="hidden md:flex items-center gap-2">
 
                     <span>
@@ -169,9 +144,6 @@
 
                 </div>
 
-
-                <!-- Mobile Menu -->
-
                 <button
                     id="mobile-menu-button"
                     class="md:hidden text-xl"
@@ -181,9 +153,6 @@
                 </button>
 
             </div>
-
-
-            <!-- Mobile Navigation -->
 
             <div
                 id="mobile-menu"
@@ -223,17 +192,7 @@
 
     </nav>
 
-
-    <!-- =====================================================
-         MAIN
-    ====================================================== -->
-
     <main>
-
-
-        <!-- =================================================
-             PAGE HEADER
-        ================================================== -->
 
         <section
             class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-6"
@@ -265,9 +224,6 @@
 
                 </div>
 
-
-                <!-- Refresh -->
-
                 <button
                     data-earthquake-refresh
                     class="px-5 py-3 rounded-lg bg-primary text-cream font-semibold hover:opacity-90 transition"
@@ -281,11 +237,6 @@
 
         </section>
 
-
-        <!-- =================================================
-             CURRENT EARTHQUAKE
-        ================================================== -->
-
         <section
             class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8"
         >
@@ -293,9 +244,6 @@
             <div
                 class="grid grid-cols-1 lg:grid-cols-3 gap-6"
             >
-
-
-                <!-- Main Event -->
 
                 <div
                     class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8"
@@ -320,7 +268,6 @@
 
                         </div>
 
-
                         <div class="text-left sm:text-right">
 
                             <p class="text-sm text-gray-500">
@@ -337,9 +284,6 @@
                         </div>
 
                     </div>
-
-
-                    <!-- Magnitude -->
 
                     <div class="mt-8 flex items-center gap-5">
 
@@ -364,7 +308,6 @@
 
                         </div>
 
-
                         <div>
 
                             <p
@@ -385,15 +328,9 @@
 
                     </div>
 
-
-                    <!-- Event Details -->
-
                     <div
                         class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8"
                     >
-
-
-                        <!-- Depth -->
 
                         <div
                             class="rounded-lg bg-cream p-4"
@@ -412,9 +349,6 @@
 
                         </div>
 
-
-                        <!-- Distance -->
-
                         <div
                             class="rounded-lg bg-cream p-4"
                         >
@@ -431,9 +365,6 @@
                             </p>
 
                         </div>
-
-
-                        <!-- Monitoring Range -->
 
                         <div
                             class="rounded-lg bg-cream p-4"
@@ -453,9 +384,6 @@
 
                 </div>
 
-
-                <!-- Monitoring Status -->
-
                 <div
                     class="bg-dark text-cream rounded-2xl shadow-sm p-6"
                 >
@@ -472,11 +400,9 @@
 
                     </div>
 
-
                     <h3 class="text-xl font-bold mt-7">
                         USGS Monitoring
                     </h3>
-
 
                     <p class="text-sm opacity-80 mt-4 leading-relaxed">
 
@@ -486,11 +412,7 @@
 
                     </p>
 
-
                     <div class="mt-6 space-y-4 text-sm">
-
-
-                        <!-- Data Source -->
 
                         <div class="flex justify-between gap-4">
 
@@ -507,9 +429,6 @@
 
                         </div>
 
-
-                        <!-- Time Window -->
-
                         <div class="flex justify-between gap-4">
 
                             <span class="opacity-70">
@@ -522,9 +441,6 @@
 
                         </div>
 
-
-                        <!-- Minimum Magnitude -->
-
                         <div class="flex justify-between gap-4">
 
                             <span class="opacity-70">
@@ -536,9 +452,6 @@
                             </span>
 
                         </div>
-
-
-                        <!-- Nearby Events -->
 
                         <div class="flex justify-between gap-4">
 
@@ -554,9 +467,6 @@
                             </span>
 
                         </div>
-
-
-                        <!-- Last Updated -->
 
                         <div class="flex justify-between gap-4">
 
@@ -581,11 +491,6 @@
 
         </section>
 
-
-        <!-- =================================================
-             ACTIVITY SUMMARY
-        ================================================== -->
-
         <section
             class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10"
         >
@@ -593,9 +498,6 @@
             <div
                 class="grid grid-cols-1 md:grid-cols-2 gap-6"
             >
-
-
-                <!-- Nearby Earthquakes -->
 
                 <div
                     class="bg-white rounded-xl border border-gray-200 shadow-sm p-6"
@@ -627,9 +529,6 @@
                     </p>
 
                 </div>
-
-
-                <!-- Strongest Earthquake -->
 
                 <div
                     class="bg-white rounded-xl border border-gray-200 shadow-sm p-6"
@@ -666,11 +565,6 @@
 
         </section>
 
-
-        <!-- =================================================
-             RECENT EARTHQUAKE EVENTS
-        ================================================== -->
-
         <section
             class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10"
         >
@@ -704,9 +598,6 @@
 
                 </div>
 
-
-                <!-- Dynamic Earthquake List -->
-
                 <div
                     data-earthquake-list
                     class="mt-6 space-y-3"
@@ -725,11 +616,6 @@
             </div>
 
         </section>
-
-
-        <!-- =================================================
-             EARTHQUAKE RISK SCALE
-        ================================================== -->
 
         <section
             class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10"
@@ -752,13 +638,9 @@
 
                 </p>
 
-
                 <div
                     class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6"
                 >
-
-
-                    <!-- Safe -->
 
                     <div
                         class="rounded-lg border border-gray-200 p-4"
@@ -785,9 +667,6 @@
 
                     </div>
 
-
-                    <!-- Low -->
-
                     <div
                         class="rounded-lg border border-gray-200 p-4"
                     >
@@ -813,9 +692,6 @@
 
                     </div>
 
-
-                    <!-- Moderate -->
-
                     <div
                         class="rounded-lg border border-gray-200 p-4"
                     >
@@ -840,9 +716,6 @@
                         </p>
 
                     </div>
-
-
-                    <!-- High / Critical -->
 
                     <div
                         class="rounded-lg border border-gray-200 p-4"
@@ -871,9 +744,6 @@
 
                 </div>
 
-
-                <!-- Important Note -->
-
                 <div
                     class="mt-6 rounded-lg bg-cream border border-secondary/30 p-4"
                 >
@@ -896,11 +766,6 @@
 
         </section>
 
-
-        <!-- =================================================
-             EARTHQUAKE INFORMATION
-        ================================================== -->
-
         <section
             class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12"
         >
@@ -908,9 +773,6 @@
             <div
                 class="grid grid-cols-1 md:grid-cols-2 gap-6"
             >
-
-
-                <!-- How It Works -->
 
                 <div
                     class="bg-white rounded-xl border border-gray-200 shadow-sm p-6"
@@ -920,11 +782,7 @@
                         How It Works
                     </h2>
 
-
                     <div class="space-y-5">
-
-
-                        <!-- Step 1 -->
 
                         <div class="flex gap-4">
 
@@ -952,9 +810,6 @@
 
                         </div>
 
-
-                        <!-- Step 2 -->
-
                         <div class="flex gap-4">
 
                             <div
@@ -980,9 +835,6 @@
                             </div>
 
                         </div>
-
-
-                        <!-- Step 3 -->
 
                         <div class="flex gap-4">
 
@@ -1010,9 +862,6 @@
 
                         </div>
 
-
-                        <!-- Step 4 -->
-
                         <div class="flex gap-4">
 
                             <div
@@ -1038,9 +887,6 @@
                             </div>
 
                         </div>
-
-
-                        <!-- Step 5 -->
 
                         <div class="flex gap-4">
 
@@ -1072,9 +918,6 @@
 
                 </div>
 
-
-                <!-- Data Source -->
-
                 <div
                     class="bg-cream rounded-xl border border-secondary/30 p-6"
                 >
@@ -1091,7 +934,6 @@
 
                     </div>
 
-
                     <p class="text-gray-600 text-sm leading-relaxed mt-5">
 
                         Earthquake information is obtained from
@@ -1104,9 +946,6 @@
 
                     </p>
 
-
-                    <!-- Configuration -->
-
                     <div
                         class="mt-6 p-4 rounded-lg bg-white border border-gray-200"
                     >
@@ -1115,11 +954,7 @@
                             Monitoring configuration
                         </p>
 
-
                         <div class="mt-3 space-y-3 text-sm">
-
-
-                            <!-- Radius -->
 
                             <div class="flex justify-between">
 
@@ -1133,9 +968,6 @@
 
                             </div>
 
-
-                            <!-- Minimum Magnitude -->
-
                             <div class="flex justify-between">
 
                                 <span>
@@ -1148,9 +980,6 @@
 
                             </div>
 
-
-                            <!-- Time Window -->
-
                             <div class="flex justify-between">
 
                                 <span>
@@ -1162,9 +991,6 @@
                                 </span>
 
                             </div>
-
-
-                            <!-- Data Format -->
 
                             <div class="flex justify-between">
 
@@ -1181,9 +1007,6 @@
                         </div>
 
                     </div>
-
-
-                    <!-- Source Status -->
 
                     <div
                         class="mt-5 flex items-center gap-2 text-sm"
@@ -1207,13 +1030,7 @@
 
         </section>
 
-
     </main>
-
-
-    <!-- =====================================================
-         FOOTER
-    ====================================================== -->
 
     <footer class="bg-dark text-cream">
 
@@ -1224,9 +1041,6 @@
             <div
                 class="grid grid-cols-1 md:grid-cols-3 gap-8"
             >
-
-
-                <!-- Brand -->
 
                 <div>
 
@@ -1242,9 +1056,6 @@
                     </p>
 
                 </div>
-
-
-                <!-- Quick Links -->
 
                 <div>
 
@@ -1295,9 +1106,6 @@
 
                 </div>
 
-
-                <!-- Status -->
-
                 <div>
 
                     <h4 class="font-semibold mb-3">
@@ -1322,7 +1130,6 @@
 
             </div>
 
-
             <div
                 class="border-t border-white/10 mt-8 pt-5 text-sm opacity-60"
             >
@@ -1337,17 +1144,12 @@
 
     </footer>
 
-
-    <!-- =====================================================
-         JAVASCRIPT
-    ====================================================== -->
-
     <script src="../js/utils.js"></script>
+    <script src="../js/api.js"></script>
 
     <script src="../js/main.js"></script>
 
     <script src="../js/earthquake.js"></script>
-
 
 </body>
 
